@@ -32,8 +32,8 @@ Any player can come and make offers. For example player A want to bet 100$ on Fr
 ### Advanced/Long term vision : 
 - Make more markets available.
 - Fetch odds from bookmakers and make odds suggestions for players.
-- Lunch the exchange for live betting
-- Lunch a decentralized betting platform (maybe inspired from Synthetix model) where users bet against the protocol : 
+- Launch the exchange for live betting
+- Launch a decentralized betting platform (maybe inspired from Synthetix model) where users bet against the protocol : 
                 <br/> -  The protocol fetches odds from different bookmakers and then make its odds for the game.
                 <br/> - Players can bet against the protocol odds ( obviously will have to take some low commission on bets)
                <br/> -  Players can also stake their BET token and earn a share of protocol revenue.
