@@ -3,6 +3,9 @@ pragma solidity >=0.8.0 <0.9.0;
 
 contract Betting {
     address public admin;
+    uint gameId;
+
+    mapping(uint => Game) public Games;
     
 
     enum BetType {Back, Lay}
@@ -36,6 +39,11 @@ contract Betting {
 
     }
 
+    modifier isValidBet(Selection selection) {
+        require(selection != Selection.Open, "not a valid bet");
+        _;
+    }
+
     modifier isOver(GameStatus status) {
         require(status == GameStatus.Over,"game is not over");
         _;
@@ -46,7 +54,13 @@ contract Betting {
         _;
     }
 
-    function betOnGame(Game memory game, BetType betType, Selection selection, uint stake, uint odds) public isStarted(game, block.timestamp) returns(bool) {
+
+    function createGame(uint kickoff, string memory teams ) public isAdmin(msg.sender) returns(bool) {
+
+    }
+
+
+    function betOnGame(Game memory game, BetType betType, Selection selection, uint stake, uint odds) public isStarted(game, block.timestamp) isValidBet(selection) returns(bool) {
 
     }
 
