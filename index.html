@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Betting Dapp</title>
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+</head>
+<body>
+    
+    <h1>Betting</h1>
+    <!-- 1. detect Metamask -->
+
+    <h2>Connect to Metamask :</h2>
+    <div id="mm-detected"></div>
+
+    <button id="mm-connect">Connect to Metamask</button>
+    <div id="mm-current-account"></div>
+<!-- 
+    <input id="odds-input-box" type="number" placeholder="Odds"/>
+    <button id="odds-input-button">Set Odds</button>
+    <input id="selection-input-box" type="number" placeholder="Selection"/>
+    <button id="selection-input-button">Set Selection</button>  -->
+    <h2>The match :</h2>
+    <h3 id="match-id" style="text-align:center"></h3>
+
+    <h2>Place your bet :</h2>
+    <form id="bet-form" >
+        <input id="odds" type="number" step="0.01" min="1" placeholder="Odds"/>
+        <label for="selection">Selection : </label>
+        <select id="selection">
+            <option value="Home">Home</option>
+            <option value="Draw">Draw</option>
+            <option value="Awat">Away</option>
+
+        </select>
+        <label for="bet-type">Bet Type : </label>
+
+        <select id="bet-type">
+            <option value="Back">Back</option>
+            <option value="Lay">Lay</option>
+
+        </select>
+
+        <button type="submit" id="submit-button">Place Bet</button>
+
+
+
+    </form>
+    <h2>Your number of  bets :</h2>
+    <div id="display-the-player-number-of-bets"> </div>
+    <button id = "get-the-player-number-of-bets"> Get number of bets</button> 
+
+    <h2>Your bets :</h2>
+    <button id = "get-the-player-bets"> Displays my bets</button> 
+    <div id="display-the-player-bets"> </div>
+    
+
+    <!-- <div><button id="bet-status"> Get Bet Status</button>
+    </div>
+    <div id="bet-status-div">Current Bet Status : </div> -->
+    <div id="player-bets"></div>
+
+    <h2>Your Payout :</h2>
+    <button id="display-payout"> Display Payout</button>
+    <div id="player-payout"></div>
+
+    <h2>Get Paid :</h2>
+    <button id="get-payout"> Pay Me!</button>
+    <div id="payout-status"></div>
+    <!-- <button id="display-bets"> Display my bets!</button>
+    <div id="display-player-bets"></div> -->
+
+   
+
+
+<script src="app.js"></script>   
+</body>
+</html>

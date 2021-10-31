@@ -3,25 +3,30 @@ pragma solidity >=0.8.0 <0.9.0;
 
 contract Games {
 
-    address  public admin;
+    address payable public admin;
     uint gameId;
     Game game;
-    uint [] odds;
-    uint backBetId;
-    uint LayBetId;
+    //uint backBetId;
+    //uint layBetId;
+    // bet counts
+    uint public betCount;
+    // hold all bets
+    Bet[] allBets;
 
-    mapping(Selection => mapping(uint => Bet [])) backBets;  //  Selection => Odds => back bets
-    mapping(Selection => mapping(uint => Bet [])) layBets;  //  Selection =>Odds => lay bets  
+    mapping(address => uint[]) playerBets; // tracks the id of players bets
     mapping(Selection => mapping(uint => uint)) backBetsAvailable; // tracks amount of back bet availble : Selection => Odds => amount
     mapping(Selection => mapping(uint => uint)) layBetsAvailable;// tracks amount of lay bet availble :  Selection => Odds => amount
-    mapping(Selection => mapping(uint => uint)) firstIdofBackBetAvailable; // track Id of first back bet available,  Selection => Odds => Id
-    mapping(Selection => mapping(uint => uint)) firstIdofLayBetAvailable; // track Id of first lay bet available,  Selection => Odds => Id
-    mapping(address => mapping(Selection => uint)) playerPayout;
+    mapping(Selection => mapping(uint => uint[])) backBetsId; // tracks the Bet id of the backBets : Selection => Odds => uint => Id
+    mapping(Selection => mapping(uint => uint[])) layBetsId; // tracks the Lay id of the backBets : Selection => Odds => uint => Id
+    mapping(Selection => mapping(uint => uint)) firstIndexOfBackBet; // track Id of first back bet available in the backBetsId[selection][odds],  Selection => Odds => Id
+    mapping(Selection => mapping(uint => uint)) firstIndexOfLayBet; // track Id of first back bet available in the backBetsId[selection][odds],  Selection => Odds => Id
+    mapping(address => mapping(Selection => uint)) playerPayout; // 
+    mapping(address => uint) playerNumberOfBets; // tracks the amount of bets the player placed
 
     enum BetType {Back, Lay}
     enum Selection {Open, Home, Draw, Away}
     enum GameStatus {Open, Over}
-    enum BetStatus {Unmachted, Matched, Closed, Win, Lose}
+    enum BetStatus {Unmatched, Matched, Closed, Win, Lose}
 
    
     event NewStatus();
@@ -30,8 +35,7 @@ contract Games {
     event betMatched(address _backer, address _layer, uint odds, Selection _selection);
 
     struct Game {
-        address owner;
-        uint kickOff;
+        address payable owner;
         string teams;
         GameStatus status;
         Selection winner;
@@ -45,6 +49,8 @@ contract Games {
         //uint stake; gonna assume only 0.001 ether bet allowed
         uint odds;
         BetStatus status;
+        uint betId;
+
        
     }
 
@@ -64,11 +70,7 @@ contract Games {
         require(game.status == GameStatus.Over ,"game is not over");
         _;
     }
-    // check if the game has already started
-    modifier isStarted(uint date) {
-        require(date < game.kickOff, "game already started");
-        _;
-    }
+ 
     // check if game is still open
     modifier isOpen() {
         require(game.status == GameStatus.Open, "Game is Over");
@@ -76,7 +78,7 @@ contract Games {
     }
 
     modifier isUnmatched(Bet memory bet) {
-        require(bet.status == BetStatus.Unmachted, "Cant add already matched bet ");
+        require(bet.status == BetStatus.Unmatched, "Cant add already matched bet ");
         _;
     }
 
@@ -97,33 +99,26 @@ contract Games {
         require(_odds>100, "unvalid odds");
         _;
     }
+    
+      // we take _odds >100 then real odds is _odds /100 e.g 350 correspond to 3.5 odds
+    modifier isValidId(uint _betId) {
+        require(_betId>0, "unvalid Id");
+        _;
+    }
+    
+    modifier isValidBetNumber(uint _betNumber, address _player) {
+        require(playerNumberOfBets[_player]>_betNumber, "unvalid Bet Number");
+        _;
+    }
 
 
-    constructor(uint kickOff, string memory teams) public {
-        require(kickOff > block.timestamp +1 minutes);
-        admin = msg.sender;
-        game.kickOff = kickOff;
+    constructor(string memory teams)  {
+        
+        admin = payable(msg.sender);
         game.owner = admin;
         game.teams = teams;
         game.status = GameStatus.Open;
         game.winner = Selection.Open;
-        for(uint i=101; i<201; i++) {
-            odds.push(i);
-
-        }
-        for(uint i=1; i<51; i++) {
-            odds.push(200+2*i);
-        }
-        for(uint i=1; i<71;i++) {
-            odds.push(300+10*i);
-        }
-        for(uint i=1;i<21;i++) {
-            odds.push(1000+50*i);
-        }
-        for(uint i=1; i<81;i++) {
-            odds.push(2000+100*i);
-        }
-
 
     }
       
@@ -131,6 +126,20 @@ contract Games {
    function changeGameStatus( Selection winner) public isAdmin(msg.sender) isOpen() returns(bool) {
         game.status = GameStatus.Over;
         game.winner = winner;
+        uint totalBets = allBets.length;
+        
+        for(uint i=0; i<totalBets; i++) {
+            if(allBets[i].status == BetStatus.Unmatched){
+                allBets[i].status = BetStatus.Closed;
+            } else if (allBets[i].status == BetStatus.Matched) {
+                if ((allBets[i].selection == winner && allBets[i].betType== BetType.Back) || (allBets[i].selection!= winner && allBets[i].betType== BetType.Lay)){
+                    allBets[i].status = BetStatus.Win;
+                } else {
+                     allBets[i].status = BetStatus.Lose;
+                }
+            }
+        
+        }
         
         emit GameWinner( winner);
         
@@ -141,38 +150,42 @@ contract Games {
     }
 
 // function for placing the bet
-    function placeBet(BetType _betType, Selection _selection, uint _odds) public payable isValidStake(_betType, _odds) isValidBet(_selection) isOpen()  {
+    function placeBet(BetType _betType, Selection _selection, uint _odds) public payable isValidStake(_betType, _odds) isValidBet(_selection) isOpen()   {
+        betCount++;
+        Bet memory playerBet = Bet(payable(msg.sender), _betType, _selection, _odds, BetStatus.Unmatched, betCount);
+        allBets.push(playerBet);
+        playerBets[payable(msg.sender)].push(betCount);
+        playerNumberOfBets[payable(msg.sender)]++;
 
          
 
         if(_betType == BetType.Back){
-
-            uint betId = backBets[_selection][_odds].length;
-            Bet memory playerBet = Bet(payable(msg.sender), _betType, _selection, _odds, BetStatus.Unmachted);
-            backBets[_selection][_odds].push(playerBet);
-
+            backBetsId[_selection][_odds].push(betCount);
             // Check if possible to match the bet
             if (layBetsAvailable[_selection][_odds]>0) {
-                uint layId = firstIdofLayBetAvailable[_selection][_odds];
-                backBets[_selection][_odds][betId].status = BetStatus.Matched;
-                layBets[_selection][_odds][layId].status = BetStatus.Matched;
-                layBetsAvailable[_selection][_odds]-=1;
-                address payable layPlayer = layBets[_selection][_odds][layId].player;
+
+                uint layId = firstIndexOfLayBet[_selection][_odds];
+                uint layBetId = layBetsId[_selection][_odds][layId]; // get Id of the lay bet
+                allBets[betCount-1].status = BetStatus.Matched;
+                allBets[layBetId-1].status = BetStatus.Matched;
+                firstIndexOfLayBet[_selection][_odds] ++; // increment the index
+                layBetsAvailable[_selection][_odds]-=1; // decrement number of laybet available
+                address payable layPlayer = allBets[layBetId-1].player;
                 incrementPotentialPayout(payable(msg.sender), _odds,  _selection, BetType.Back);
                 incrementWithStake(payable(msg.sender), _odds, BetType.Back);
                 decrementWithStake(payable(msg.sender), _odds, _selection, BetType.Back);
                 decrementWithStake(layPlayer, _odds, _selection, BetType.Lay);
                 incrementPotentialPayout(layPlayer, _odds,  _selection, BetType.Lay);
-                firstIdofLayBetAvailable[_selection][_odds]+=1;
                 emit betMatched(msg.sender, layPlayer,  _odds,  _selection);
-                
-
             
             }
            
 
             else if (layBetsAvailable[_selection][_odds] == 0) {
                 backBetsAvailable[_selection][_odds]+=1;
+                // do something for first index
+
+
                 incrementWithStake(payable(msg.sender), _odds,  BetType.Back);
                 emit unmatchedBetCreated(msg.sender,  _odds,  _selection,  _betType);
             }
@@ -183,23 +196,26 @@ contract Games {
         }
 
         else if (_betType == BetType.Lay) {
-            uint betId = layBets[_selection][_odds].length;
-            Bet memory playerBet = Bet(payable(msg.sender), _betType, _selection, _odds, BetStatus.Unmachted);
-            layBets[_selection][_odds].push(playerBet);
+
+            backBetsId[_selection][_odds].push(betCount);
 
             // Check if possible to match the bet
             if (backBetsAvailable[_selection][_odds]>0) {
-                uint backId = firstIdofBackBetAvailable[_selection][_odds];
-                backBets[_selection][_odds][backId].status = BetStatus.Matched;
-                layBets[_selection][_odds][betId].status = BetStatus.Matched;
-                backBetsAvailable[_selection][_odds]-=1;
-                address payable backPlayer = backBets[_selection][_odds][backId].player;
+
+                uint backId = firstIndexOfBackBet[_selection][_odds];
+                uint backBetId = backBetsId[_selection][_odds][backId]; // get Id of the back bet
+                allBets[betCount-1].status = BetStatus.Matched;
+                allBets[backBetId-1].status = BetStatus.Matched;
+                firstIndexOfBackBet[_selection][_odds] ++; // increment the index
+                backBetsAvailable[_selection][_odds]-=1; // decrement number of laybet available
+                address payable backPlayer = allBets[backBetId-1].player;
+
+                
                 incrementPotentialPayout(payable(msg.sender), _odds,  _selection, BetType.Lay);
                 incrementWithStake(payable(msg.sender), _odds,  BetType.Lay);
                 decrementWithStake(payable(msg.sender), _odds, _selection, BetType.Lay);
                 decrementWithStake(backPlayer, _odds, _selection, BetType.Back);
                 incrementPotentialPayout(backPlayer, _odds,  _selection, BetType.Back);
-                firstIdofBackBetAvailable[_selection][_odds]+=1;
                 emit betMatched(backPlayer, msg.sender,  _odds,  _selection);
                 
 
@@ -219,7 +235,8 @@ contract Games {
 
 
     }
-
+    
+    
 
 
 
@@ -304,6 +321,33 @@ contract Games {
     function getLayBetsAvailable(Selection _selection, uint _odds) public view returns(uint) {
         uint laybets = layBetsAvailable[_selection][_odds];
         return laybets;
+    }
+
+    function getPlayerNumberOfBets(address _player) public view returns(uint) {
+        return playerNumberOfBets[_player];
+    }
+
+    //function getPlayerBet(address _player, uint _betId) public view returns(Bet memory) {
+       // return 0;
+  // }
+    function getBet(uint _betId) public view isValidId(_betId) returns( Bet memory) {
+        require(_betId <= betCount, "Not such Bet with this Bet Id");
+        return allBets[_betId-1];
+        
+    }
+    
+    function getPlayerBet(address _player, uint _betNumber) public view isValidBetNumber(_betNumber, _player) returns(Bet memory) {
+        uint _betId = playerBets[_player][_betNumber] -1;
+        return allBets[_betId];
+        
+    }
+    
+    function getTeams() public view returns(string memory)  {
+        return game.teams;
+    }
+    
+    function getBetStatus(uint _betId)  public view isValidId(_betId) returns(BetStatus)  {
+        return allBets[_betId-1].status;
     }
 
 
