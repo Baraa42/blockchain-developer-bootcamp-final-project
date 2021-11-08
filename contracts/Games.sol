@@ -4,14 +4,14 @@ pragma solidity >=0.8.0 <0.9.0;
 contract Games {
 
     address payable public admin;
-    uint gameId;
-    Game game;
+    uint public gameId;
+    Game public game;
     //uint backBetId;
     //uint layBetId;
     // bet counts
     uint public betCount;
     // hold all bets
-    Bet[] allBets;
+    Bet[] public allBets;
 
     mapping(address => uint[]) playerBets; // tracks the id of players bets
     mapping(Selection => mapping(uint => uint)) backBetsAvailable; // tracks amount of back bet availble : Selection => Odds => amount
