@@ -35,10 +35,11 @@ contract Games {
     event NewStatus();
     event GameWinner(Selection selection);
     event unmatchedBetCreated(address _player, uint256 _odds, Selection _selection, BetType _betType);
-    event betMatched(address _backer, address _layer, uint odds, Selection _selection);
-    event playerDeposit(address player, uint amount);
-    event playerWithdrawal(address player, uint amount);
-    event payout(Game _game);
+    event BetMatched(address _backer, address _layer, uint odds, Selection _selection);
+    event PlayerDeposit(address player, uint amount);
+    event PlayerWithdrawal(address player, uint amount);
+    event Payout(Game _game);
+    event ValueReceived(address user, uint amount);
 
     struct Game {
         address  owner;
@@ -174,7 +175,7 @@ contract Games {
     function deposit(uint amount) public payable {
         require(msg.value==amount, "unvalid amount");
         balances[msg.sender] += msg.value;
-        emit playerDeposit(msg.sender, msg.value);
+        emit PlayerDeposit(msg.sender, msg.value);
         
     }
     
@@ -182,7 +183,7 @@ contract Games {
         require(balances[msg.sender] >= amount, "not enough funds");
         balances[msg.sender] -= amount;
         payable(msg.sender).transfer(amount);
-        emit playerWithdrawal(msg.sender, amount);
+        emit PlayerWithdrawal(msg.sender, amount);
         
         
     }
@@ -192,7 +193,7 @@ contract Games {
         uint amount = balances[msg.sender];
         balances[msg.sender] =0;
         payable(msg.sender).transfer(amount);
-        emit playerWithdrawal(msg.sender, amount);
+        emit PlayerWithdrawal(msg.sender, amount);
         
         
     }
@@ -202,7 +203,7 @@ contract Games {
     }
 
 // functions for placing the bet
-    function placeBet(BetType _betType, Selection _selection, Stake _stake, uint _odds ) public payable  hasEnoughFunds( _betType, msg.sender,  _stake,  _odds ) isValidBet(_selection) isOpen() isValidOdds(_odds)   {
+    function placeBet(BetType _betType, Selection _selection, Stake _stake, uint _odds )  external payable  hasEnoughFunds( _betType, msg.sender,  _stake,  _odds ) isValidBet(_selection) isOpen() isValidOdds(_odds)   {
         
         betCount++;
         
@@ -254,7 +255,7 @@ contract Games {
             decrementWithStake(player, _odds, _selection, BetType.Back, _stake);
             decrementWithStake(layPlayer, _odds, _selection, BetType.Lay, _stake);
             incrementPotentialPayout(layPlayer, _odds,  _selection, BetType.Lay, _stake);
-            emit betMatched(player, layPlayer,  _odds,  _selection);
+            emit BetMatched(player, layPlayer,  _odds,  _selection);
         
         }
            
@@ -289,7 +290,7 @@ contract Games {
             decrementWithStake(player, _odds, _selection, BetType.Lay, _stake);
             decrementWithStake(backPlayer, _odds, _selection, BetType.Back, _stake);
             incrementPotentialPayout(backPlayer, _odds,  _selection, BetType.Back, _stake);
-            emit betMatched(backPlayer, player,  _odds,  _selection);
+            emit BetMatched(backPlayer, player,  _odds,  _selection);
             
 
         
@@ -435,8 +436,20 @@ contract Games {
             
         }
           
-        emit payout(game);
+        emit Payout(game);
 
+    }
+    
+    receive() external payable {
+        
+        emit ValueReceived(msg.sender, msg.value);
+        
+    }
+    
+    fallback() external payable {
+        
+        emit ValueReceived(msg.sender, msg.value);
+        
     }
 
   
