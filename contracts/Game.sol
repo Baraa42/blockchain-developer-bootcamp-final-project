@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.0 <0.9.0;
 
-contract Games {
+import "@openzeppelin/contracts/access/Ownable.sol";
+contract Games is Ownable {
 
     address  public admin;
     Game public game;
@@ -61,12 +62,7 @@ contract Games {
        
     }
 
-     // Check if caller is the admin
-    modifier isAdmin(address addr) {
-        require(addr==admin, "you are not allowed");
-        _;
-
-    }
+   
     // Check if the selection of the bet is correct 
     modifier isValidBet(Selection selection) {
         require(selection != Selection.Open, "not a valid bet");
@@ -143,7 +139,7 @@ contract Games {
     }
       
 // admin change game status
-   function changeGameStatus( Selection winner) public isAdmin(msg.sender) isOpen()  {
+   function changeGameStatus( Selection winner) public onlyOwner isOpen()  {
         game.status = GameStatus.Over;
         game.winner = winner;
         uint totalBets = allBets.length;
