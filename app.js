@@ -1,650 +1,650 @@
 console.log("hello")
-const gamesAddress2 = "0xAafdBbc3c90228D8a2BbEC2b8A3c33DaC1b8A16a"
-const gamesAddress  = "0xd4DD3A0De1ceCcd586E54e5559A3094Eb9789b07"
-const gamesABI2 = [
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "kickOff",
-				"type": "uint256"
-			},
-			{
-				"internalType": "string",
-				"name": "teams",
-				"type": "string"
-			}
-		],
-		"stateMutability": "nonpayable",
-		"type": "constructor"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"internalType": "enum Games.Selection",
-				"name": "selection",
-				"type": "uint8"
-			}
-		],
-		"name": "GameWinner",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [],
-		"name": "NewStatus",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"internalType": "address",
-				"name": "_backer",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "address",
-				"name": "_layer",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "odds",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "enum Games.Selection",
-				"name": "_selection",
-				"type": "uint8"
-			}
-		],
-		"name": "betMatched",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"internalType": "address",
-				"name": "_player",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "_odds",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "enum Games.Selection",
-				"name": "_selection",
-				"type": "uint8"
-			},
-			{
-				"indexed": false,
-				"internalType": "enum Games.BetType",
-				"name": "_betType",
-				"type": "uint8"
-			}
-		],
-		"name": "unmatchedBetCreated",
-		"type": "event"
-	},
-	{
-		"inputs": [],
-		"name": "admin",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "enum Games.Selection",
-				"name": "winner",
-				"type": "uint8"
-			}
-		],
-		"name": "changeGameStatus",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "enum Games.Selection",
-				"name": "_selection",
-				"type": "uint8"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_odds",
-				"type": "uint256"
-			}
-		],
-		"name": "getBackBetsAvailable",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "enum Games.Selection",
-				"name": "_selection",
-				"type": "uint8"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_odds",
-				"type": "uint256"
-			}
-		],
-		"name": "getLayBetsAvailable",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address payable",
-				"name": "_player",
-				"type": "address"
-			},
-			{
-				"internalType": "enum Games.Selection",
-				"name": "_selection",
-				"type": "uint8"
-			}
-		],
-		"name": "getPayout",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "payout",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "enum Games.BetType",
-				"name": "_betType",
-				"type": "uint8"
-			},
-			{
-				"internalType": "enum Games.Selection",
-				"name": "_selection",
-				"type": "uint8"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_odds",
-				"type": "uint256"
-			}
-		],
-		"name": "placeBet",
-		"outputs": [],
-		"stateMutability": "payable",
-		"type": "function"
-	}
-] 
-const gamesABI = [
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "teams",
-				"type": "string"
-			}
-		],
-		"stateMutability": "nonpayable",
-		"type": "constructor"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"internalType": "enum Games.Selection",
-				"name": "selection",
-				"type": "uint8"
-			}
-		],
-		"name": "GameWinner",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [],
-		"name": "NewStatus",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"internalType": "address",
-				"name": "_backer",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "address",
-				"name": "_layer",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "odds",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "enum Games.Selection",
-				"name": "_selection",
-				"type": "uint8"
-			}
-		],
-		"name": "betMatched",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"internalType": "address",
-				"name": "_player",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "_odds",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "enum Games.Selection",
-				"name": "_selection",
-				"type": "uint8"
-			},
-			{
-				"indexed": false,
-				"internalType": "enum Games.BetType",
-				"name": "_betType",
-				"type": "uint8"
-			}
-		],
-		"name": "unmatchedBetCreated",
-		"type": "event"
-	},
-	{
-		"inputs": [],
-		"name": "admin",
-		"outputs": [
-			{
-				"internalType": "address payable",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "betCount",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "enum Games.Selection",
-				"name": "winner",
-				"type": "uint8"
-			}
-		],
-		"name": "changeGameStatus",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "enum Games.Selection",
-				"name": "_selection",
-				"type": "uint8"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_odds",
-				"type": "uint256"
-			}
-		],
-		"name": "getBackBetsAvailable",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "_betId",
-				"type": "uint256"
-			}
-		],
-		"name": "getBet",
-		"outputs": [
-			{
-				"components": [
-					{
-						"internalType": "address payable",
-						"name": "player",
-						"type": "address"
-					},
-					{
-						"internalType": "enum Games.BetType",
-						"name": "betType",
-						"type": "uint8"
-					},
-					{
-						"internalType": "enum Games.Selection",
-						"name": "selection",
-						"type": "uint8"
-					},
-					{
-						"internalType": "uint256",
-						"name": "odds",
-						"type": "uint256"
-					},
-					{
-						"internalType": "enum Games.BetStatus",
-						"name": "status",
-						"type": "uint8"
-					},
-					{
-						"internalType": "uint256",
-						"name": "betId",
-						"type": "uint256"
-					}
-				],
-				"internalType": "struct Games.Bet",
-				"name": "",
-				"type": "tuple"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "_betId",
-				"type": "uint256"
-			}
-		],
-		"name": "getBetStatus",
-		"outputs": [
-			{
-				"internalType": "enum Games.BetStatus",
-				"name": "",
-				"type": "uint8"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "enum Games.Selection",
-				"name": "_selection",
-				"type": "uint8"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_odds",
-				"type": "uint256"
-			}
-		],
-		"name": "getLayBetsAvailable",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address payable",
-				"name": "_player",
-				"type": "address"
-			},
-			{
-				"internalType": "enum Games.Selection",
-				"name": "_selection",
-				"type": "uint8"
-			}
-		],
-		"name": "getPayout",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "_player",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_betNumber",
-				"type": "uint256"
-			}
-		],
-		"name": "getPlayerBet",
-		"outputs": [
-			{
-				"components": [
-					{
-						"internalType": "address payable",
-						"name": "player",
-						"type": "address"
-					},
-					{
-						"internalType": "enum Games.BetType",
-						"name": "betType",
-						"type": "uint8"
-					},
-					{
-						"internalType": "enum Games.Selection",
-						"name": "selection",
-						"type": "uint8"
-					},
-					{
-						"internalType": "uint256",
-						"name": "odds",
-						"type": "uint256"
-					},
-					{
-						"internalType": "enum Games.BetStatus",
-						"name": "status",
-						"type": "uint8"
-					},
-					{
-						"internalType": "uint256",
-						"name": "betId",
-						"type": "uint256"
-					}
-				],
-				"internalType": "struct Games.Bet",
-				"name": "",
-				"type": "tuple"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "_player",
-				"type": "address"
-			}
-		],
-		"name": "getPlayerNumberOfBets",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "getTeams",
-		"outputs": [
-			{
-				"internalType": "string",
-				"name": "",
-				"type": "string"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "payout",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "enum Games.BetType",
-				"name": "_betType",
-				"type": "uint8"
-			},
-			{
-				"internalType": "enum Games.Selection",
-				"name": "_selection",
-				"type": "uint8"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_odds",
-				"type": "uint256"
-			}
-		],
-		"name": "placeBet",
-		"outputs": [],
-		"stateMutability": "payable",
-		"type": "function"
-	}
-]
+// const gamesAddress2 = "0xAafdBbc3c90228D8a2BbEC2b8A3c33DaC1b8A16a"
+// const gamesAddress  = "0xd4DD3A0De1ceCcd586E54e5559A3094Eb9789b07"
+// const gamesABI2 = [
+// 	{
+// 		"inputs": [
+// 			{
+// 				"internalType": "uint256",
+// 				"name": "kickOff",
+// 				"type": "uint256"
+// 			},
+// 			{
+// 				"internalType": "string",
+// 				"name": "teams",
+// 				"type": "string"
+// 			}
+// 		],
+// 		"stateMutability": "nonpayable",
+// 		"type": "constructor"
+// 	},
+// 	{
+// 		"anonymous": false,
+// 		"inputs": [
+// 			{
+// 				"indexed": false,
+// 				"internalType": "enum Games.Selection",
+// 				"name": "selection",
+// 				"type": "uint8"
+// 			}
+// 		],
+// 		"name": "GameWinner",
+// 		"type": "event"
+// 	},
+// 	{
+// 		"anonymous": false,
+// 		"inputs": [],
+// 		"name": "NewStatus",
+// 		"type": "event"
+// 	},
+// 	{
+// 		"anonymous": false,
+// 		"inputs": [
+// 			{
+// 				"indexed": false,
+// 				"internalType": "address",
+// 				"name": "_backer",
+// 				"type": "address"
+// 			},
+// 			{
+// 				"indexed": false,
+// 				"internalType": "address",
+// 				"name": "_layer",
+// 				"type": "address"
+// 			},
+// 			{
+// 				"indexed": false,
+// 				"internalType": "uint256",
+// 				"name": "odds",
+// 				"type": "uint256"
+// 			},
+// 			{
+// 				"indexed": false,
+// 				"internalType": "enum Games.Selection",
+// 				"name": "_selection",
+// 				"type": "uint8"
+// 			}
+// 		],
+// 		"name": "betMatched",
+// 		"type": "event"
+// 	},
+// 	{
+// 		"anonymous": false,
+// 		"inputs": [
+// 			{
+// 				"indexed": false,
+// 				"internalType": "address",
+// 				"name": "_player",
+// 				"type": "address"
+// 			},
+// 			{
+// 				"indexed": false,
+// 				"internalType": "uint256",
+// 				"name": "_odds",
+// 				"type": "uint256"
+// 			},
+// 			{
+// 				"indexed": false,
+// 				"internalType": "enum Games.Selection",
+// 				"name": "_selection",
+// 				"type": "uint8"
+// 			},
+// 			{
+// 				"indexed": false,
+// 				"internalType": "enum Games.BetType",
+// 				"name": "_betType",
+// 				"type": "uint8"
+// 			}
+// 		],
+// 		"name": "unmatchedBetCreated",
+// 		"type": "event"
+// 	},
+// 	{
+// 		"inputs": [],
+// 		"name": "admin",
+// 		"outputs": [
+// 			{
+// 				"internalType": "address",
+// 				"name": "",
+// 				"type": "address"
+// 			}
+// 		],
+// 		"stateMutability": "view",
+// 		"type": "function"
+// 	},
+// 	{
+// 		"inputs": [
+// 			{
+// 				"internalType": "enum Games.Selection",
+// 				"name": "winner",
+// 				"type": "uint8"
+// 			}
+// 		],
+// 		"name": "changeGameStatus",
+// 		"outputs": [
+// 			{
+// 				"internalType": "bool",
+// 				"name": "",
+// 				"type": "bool"
+// 			}
+// 		],
+// 		"stateMutability": "nonpayable",
+// 		"type": "function"
+// 	},
+// 	{
+// 		"inputs": [
+// 			{
+// 				"internalType": "enum Games.Selection",
+// 				"name": "_selection",
+// 				"type": "uint8"
+// 			},
+// 			{
+// 				"internalType": "uint256",
+// 				"name": "_odds",
+// 				"type": "uint256"
+// 			}
+// 		],
+// 		"name": "getBackBetsAvailable",
+// 		"outputs": [
+// 			{
+// 				"internalType": "uint256",
+// 				"name": "",
+// 				"type": "uint256"
+// 			}
+// 		],
+// 		"stateMutability": "view",
+// 		"type": "function"
+// 	},
+// 	{
+// 		"inputs": [
+// 			{
+// 				"internalType": "enum Games.Selection",
+// 				"name": "_selection",
+// 				"type": "uint8"
+// 			},
+// 			{
+// 				"internalType": "uint256",
+// 				"name": "_odds",
+// 				"type": "uint256"
+// 			}
+// 		],
+// 		"name": "getLayBetsAvailable",
+// 		"outputs": [
+// 			{
+// 				"internalType": "uint256",
+// 				"name": "",
+// 				"type": "uint256"
+// 			}
+// 		],
+// 		"stateMutability": "view",
+// 		"type": "function"
+// 	},
+// 	{
+// 		"inputs": [
+// 			{
+// 				"internalType": "address payable",
+// 				"name": "_player",
+// 				"type": "address"
+// 			},
+// 			{
+// 				"internalType": "enum Games.Selection",
+// 				"name": "_selection",
+// 				"type": "uint8"
+// 			}
+// 		],
+// 		"name": "getPayout",
+// 		"outputs": [
+// 			{
+// 				"internalType": "uint256",
+// 				"name": "",
+// 				"type": "uint256"
+// 			}
+// 		],
+// 		"stateMutability": "view",
+// 		"type": "function"
+// 	},
+// 	{
+// 		"inputs": [],
+// 		"name": "payout",
+// 		"outputs": [
+// 			{
+// 				"internalType": "bool",
+// 				"name": "",
+// 				"type": "bool"
+// 			}
+// 		],
+// 		"stateMutability": "nonpayable",
+// 		"type": "function"
+// 	},
+// 	{
+// 		"inputs": [
+// 			{
+// 				"internalType": "enum Games.BetType",
+// 				"name": "_betType",
+// 				"type": "uint8"
+// 			},
+// 			{
+// 				"internalType": "enum Games.Selection",
+// 				"name": "_selection",
+// 				"type": "uint8"
+// 			},
+// 			{
+// 				"internalType": "uint256",
+// 				"name": "_odds",
+// 				"type": "uint256"
+// 			}
+// 		],
+// 		"name": "placeBet",
+// 		"outputs": [],
+// 		"stateMutability": "payable",
+// 		"type": "function"
+// 	}
+// ] 
+// const gamesABI = [
+// 	{
+// 		"inputs": [
+// 			{
+// 				"internalType": "string",
+// 				"name": "teams",
+// 				"type": "string"
+// 			}
+// 		],
+// 		"stateMutability": "nonpayable",
+// 		"type": "constructor"
+// 	},
+// 	{
+// 		"anonymous": false,
+// 		"inputs": [
+// 			{
+// 				"indexed": false,
+// 				"internalType": "enum Games.Selection",
+// 				"name": "selection",
+// 				"type": "uint8"
+// 			}
+// 		],
+// 		"name": "GameWinner",
+// 		"type": "event"
+// 	},
+// 	{
+// 		"anonymous": false,
+// 		"inputs": [],
+// 		"name": "NewStatus",
+// 		"type": "event"
+// 	},
+// 	{
+// 		"anonymous": false,
+// 		"inputs": [
+// 			{
+// 				"indexed": false,
+// 				"internalType": "address",
+// 				"name": "_backer",
+// 				"type": "address"
+// 			},
+// 			{
+// 				"indexed": false,
+// 				"internalType": "address",
+// 				"name": "_layer",
+// 				"type": "address"
+// 			},
+// 			{
+// 				"indexed": false,
+// 				"internalType": "uint256",
+// 				"name": "odds",
+// 				"type": "uint256"
+// 			},
+// 			{
+// 				"indexed": false,
+// 				"internalType": "enum Games.Selection",
+// 				"name": "_selection",
+// 				"type": "uint8"
+// 			}
+// 		],
+// 		"name": "betMatched",
+// 		"type": "event"
+// 	},
+// 	{
+// 		"anonymous": false,
+// 		"inputs": [
+// 			{
+// 				"indexed": false,
+// 				"internalType": "address",
+// 				"name": "_player",
+// 				"type": "address"
+// 			},
+// 			{
+// 				"indexed": false,
+// 				"internalType": "uint256",
+// 				"name": "_odds",
+// 				"type": "uint256"
+// 			},
+// 			{
+// 				"indexed": false,
+// 				"internalType": "enum Games.Selection",
+// 				"name": "_selection",
+// 				"type": "uint8"
+// 			},
+// 			{
+// 				"indexed": false,
+// 				"internalType": "enum Games.BetType",
+// 				"name": "_betType",
+// 				"type": "uint8"
+// 			}
+// 		],
+// 		"name": "unmatchedBetCreated",
+// 		"type": "event"
+// 	},
+// 	{
+// 		"inputs": [],
+// 		"name": "admin",
+// 		"outputs": [
+// 			{
+// 				"internalType": "address payable",
+// 				"name": "",
+// 				"type": "address"
+// 			}
+// 		],
+// 		"stateMutability": "view",
+// 		"type": "function"
+// 	},
+// 	{
+// 		"inputs": [],
+// 		"name": "betCount",
+// 		"outputs": [
+// 			{
+// 				"internalType": "uint256",
+// 				"name": "",
+// 				"type": "uint256"
+// 			}
+// 		],
+// 		"stateMutability": "view",
+// 		"type": "function"
+// 	},
+// 	{
+// 		"inputs": [
+// 			{
+// 				"internalType": "enum Games.Selection",
+// 				"name": "winner",
+// 				"type": "uint8"
+// 			}
+// 		],
+// 		"name": "changeGameStatus",
+// 		"outputs": [
+// 			{
+// 				"internalType": "bool",
+// 				"name": "",
+// 				"type": "bool"
+// 			}
+// 		],
+// 		"stateMutability": "nonpayable",
+// 		"type": "function"
+// 	},
+// 	{
+// 		"inputs": [
+// 			{
+// 				"internalType": "enum Games.Selection",
+// 				"name": "_selection",
+// 				"type": "uint8"
+// 			},
+// 			{
+// 				"internalType": "uint256",
+// 				"name": "_odds",
+// 				"type": "uint256"
+// 			}
+// 		],
+// 		"name": "getBackBetsAvailable",
+// 		"outputs": [
+// 			{
+// 				"internalType": "uint256",
+// 				"name": "",
+// 				"type": "uint256"
+// 			}
+// 		],
+// 		"stateMutability": "view",
+// 		"type": "function"
+// 	},
+// 	{
+// 		"inputs": [
+// 			{
+// 				"internalType": "uint256",
+// 				"name": "_betId",
+// 				"type": "uint256"
+// 			}
+// 		],
+// 		"name": "getBet",
+// 		"outputs": [
+// 			{
+// 				"components": [
+// 					{
+// 						"internalType": "address payable",
+// 						"name": "player",
+// 						"type": "address"
+// 					},
+// 					{
+// 						"internalType": "enum Games.BetType",
+// 						"name": "betType",
+// 						"type": "uint8"
+// 					},
+// 					{
+// 						"internalType": "enum Games.Selection",
+// 						"name": "selection",
+// 						"type": "uint8"
+// 					},
+// 					{
+// 						"internalType": "uint256",
+// 						"name": "odds",
+// 						"type": "uint256"
+// 					},
+// 					{
+// 						"internalType": "enum Games.BetStatus",
+// 						"name": "status",
+// 						"type": "uint8"
+// 					},
+// 					{
+// 						"internalType": "uint256",
+// 						"name": "betId",
+// 						"type": "uint256"
+// 					}
+// 				],
+// 				"internalType": "struct Games.Bet",
+// 				"name": "",
+// 				"type": "tuple"
+// 			}
+// 		],
+// 		"stateMutability": "view",
+// 		"type": "function"
+// 	},
+// 	{
+// 		"inputs": [
+// 			{
+// 				"internalType": "uint256",
+// 				"name": "_betId",
+// 				"type": "uint256"
+// 			}
+// 		],
+// 		"name": "getBetStatus",
+// 		"outputs": [
+// 			{
+// 				"internalType": "enum Games.BetStatus",
+// 				"name": "",
+// 				"type": "uint8"
+// 			}
+// 		],
+// 		"stateMutability": "view",
+// 		"type": "function"
+// 	},
+// 	{
+// 		"inputs": [
+// 			{
+// 				"internalType": "enum Games.Selection",
+// 				"name": "_selection",
+// 				"type": "uint8"
+// 			},
+// 			{
+// 				"internalType": "uint256",
+// 				"name": "_odds",
+// 				"type": "uint256"
+// 			}
+// 		],
+// 		"name": "getLayBetsAvailable",
+// 		"outputs": [
+// 			{
+// 				"internalType": "uint256",
+// 				"name": "",
+// 				"type": "uint256"
+// 			}
+// 		],
+// 		"stateMutability": "view",
+// 		"type": "function"
+// 	},
+// 	{
+// 		"inputs": [
+// 			{
+// 				"internalType": "address payable",
+// 				"name": "_player",
+// 				"type": "address"
+// 			},
+// 			{
+// 				"internalType": "enum Games.Selection",
+// 				"name": "_selection",
+// 				"type": "uint8"
+// 			}
+// 		],
+// 		"name": "getPayout",
+// 		"outputs": [
+// 			{
+// 				"internalType": "uint256",
+// 				"name": "",
+// 				"type": "uint256"
+// 			}
+// 		],
+// 		"stateMutability": "view",
+// 		"type": "function"
+// 	},
+// 	{
+// 		"inputs": [
+// 			{
+// 				"internalType": "address",
+// 				"name": "_player",
+// 				"type": "address"
+// 			},
+// 			{
+// 				"internalType": "uint256",
+// 				"name": "_betNumber",
+// 				"type": "uint256"
+// 			}
+// 		],
+// 		"name": "getPlayerBet",
+// 		"outputs": [
+// 			{
+// 				"components": [
+// 					{
+// 						"internalType": "address payable",
+// 						"name": "player",
+// 						"type": "address"
+// 					},
+// 					{
+// 						"internalType": "enum Games.BetType",
+// 						"name": "betType",
+// 						"type": "uint8"
+// 					},
+// 					{
+// 						"internalType": "enum Games.Selection",
+// 						"name": "selection",
+// 						"type": "uint8"
+// 					},
+// 					{
+// 						"internalType": "uint256",
+// 						"name": "odds",
+// 						"type": "uint256"
+// 					},
+// 					{
+// 						"internalType": "enum Games.BetStatus",
+// 						"name": "status",
+// 						"type": "uint8"
+// 					},
+// 					{
+// 						"internalType": "uint256",
+// 						"name": "betId",
+// 						"type": "uint256"
+// 					}
+// 				],
+// 				"internalType": "struct Games.Bet",
+// 				"name": "",
+// 				"type": "tuple"
+// 			}
+// 		],
+// 		"stateMutability": "view",
+// 		"type": "function"
+// 	},
+// 	{
+// 		"inputs": [
+// 			{
+// 				"internalType": "address",
+// 				"name": "_player",
+// 				"type": "address"
+// 			}
+// 		],
+// 		"name": "getPlayerNumberOfBets",
+// 		"outputs": [
+// 			{
+// 				"internalType": "uint256",
+// 				"name": "",
+// 				"type": "uint256"
+// 			}
+// 		],
+// 		"stateMutability": "view",
+// 		"type": "function"
+// 	},
+// 	{
+// 		"inputs": [],
+// 		"name": "getTeams",
+// 		"outputs": [
+// 			{
+// 				"internalType": "string",
+// 				"name": "",
+// 				"type": "string"
+// 			}
+// 		],
+// 		"stateMutability": "view",
+// 		"type": "function"
+// 	},
+// 	{
+// 		"inputs": [],
+// 		"name": "payout",
+// 		"outputs": [
+// 			{
+// 				"internalType": "bool",
+// 				"name": "",
+// 				"type": "bool"
+// 			}
+// 		],
+// 		"stateMutability": "nonpayable",
+// 		"type": "function"
+// 	},
+// 	{
+// 		"inputs": [
+// 			{
+// 				"internalType": "enum Games.BetType",
+// 				"name": "_betType",
+// 				"type": "uint8"
+// 			},
+// 			{
+// 				"internalType": "enum Games.Selection",
+// 				"name": "_selection",
+// 				"type": "uint8"
+// 			},
+// 			{
+// 				"internalType": "uint256",
+// 				"name": "_odds",
+// 				"type": "uint256"
+// 			}
+// 		],
+// 		"name": "placeBet",
+// 		"outputs": [],
+// 		"stateMutability": "payable",
+// 		"type": "function"
+// 	}
+// ]
 const network = "Rinkeby"
 
 
