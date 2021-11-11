@@ -25,21 +25,46 @@
     <h2>The match :</h2>
     <h3 id="match-id" style="text-align:center"></h3>
 
+    <h2>Banking:</h2>
+    <div id='banking'> 
+        <div id = 'balance'> Your Balance : </div>
+
+        <input id="deposit" type="number" step="0.01" min="0.001" placeholder="Amount in ETH"/>
+        <button id="deposit-button">Deposit</button>
+        
+        <input id="withdraw" type="number" step="0.01" min="0.001" placeholder="Amount in ETH"/>
+        <button id="withdraw-button">Withdraw</button>
+
+        <button id="withdraw-all">Withdraw All Balance</button>
+
+    </div>
+
     <h2>Place your bet :</h2>
     <form id="bet-form" >
+
         <input id="odds" type="number" step="0.01" min="1" placeholder="Odds"/>
+
+        <label for="bet-type">Bet Type : </label>
+        <select id="bet-type">
+            <option value="Back">Back</option>
+            <option value="Lay">Lay</option>
+
+        </select>
+
         <label for="selection">Selection : </label>
         <select id="selection">
             <option value="Home">Home</option>
             <option value="Draw">Draw</option>
-            <option value="Awat">Away</option>
+            <option value="Away">Away</option>
 
         </select>
-        <label for="bet-type">Bet Type : </label>
 
-        <select id="bet-type">
-            <option value="Back">Back</option>
-            <option value="Lay">Lay</option>
+        <label for="stake">Stake : </label>
+        <select id="stake">
+            <option value="Ether">1 Ether</option>
+            <option value="HunderFinney"> 0.1 Ether</option>
+            <option value="TenFinney">0.01 Ether</option>
+            <option value="Finney">0.001 Ether</option>
 
         </select>
 
@@ -48,6 +73,9 @@
 
 
     </form>
+
+
+
     <h2>Your number of  bets :</h2>
     <div id="display-the-player-number-of-bets"> </div>
     <button id = "get-the-player-number-of-bets"> Get number of bets</button> 
