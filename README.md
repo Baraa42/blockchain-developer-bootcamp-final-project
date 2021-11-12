@@ -19,8 +19,12 @@ The order matching algorithm is simplified here and players can only bet one of 
 
   - Contracts directory :
     - Game contract the main contract
+    - 
   - Test directory : 
     - Game.js : Truffle tests
+   
+  - node_modules :
+    - OpenZeppelin contract
     
     
     
