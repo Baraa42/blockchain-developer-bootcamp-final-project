@@ -889,6 +889,14 @@ window.addEventListener("load", async ()=> {
 /// BALANCE
 const balance = document.getElementById('balance')
 
+async function displayBalance(address) {
+	let playerBalance = await games.methods.getBalance(address).call();
+	let ethBalance = playerBalance / 10**18;
+	balance.innerHTML = 'Your Balance : ' + ethBalance + '  ETH';
+
+}
+
+
 /// DEPOSIT SECTION
 const deposit = document.getElementById('deposit');
 const depositButton = document.getElementById('deposit-button');
@@ -902,9 +910,7 @@ depositButton.onclick = async () => {
          value: depositAmount,
     })
 
-	let playerBalance = await games.methods.getBalance(ethereum.selectedAddress).call();
-	let ethBalance = playerBalance / 10**18;
-	balance.innerHTML = 'Your Balance : ' + ethBalance + '  ETH';
+	displayBalance(ethereum.selectedAddress);
 
 
 
@@ -931,11 +937,7 @@ withdrawButton.onclick = async () => {
 
 
 	
-	let playerBalance = await games.methods.getBalance(ethereum.selectedAddress).call();
-	let ethBalance = playerBalance / 10**18;
-
-	console.log(ethBalance)
-	balance.innerHTML = 'Your Balance : ' + ethBalance + '  ETH';
+	displayBalance(ethereum.selectedAddress);
 
 
 
@@ -952,6 +954,9 @@ withdrawAllButton.onclick = async () => {
          value: '0',
     });
 
+
+	displayBalance(ethereum.selectedAddress);
+
 }
 // PLACING BET
 
@@ -961,69 +966,58 @@ const odds = betForm.elements["odds"];
 const selection = betForm.elements["selection"];
 const betType = betForm.elements["bet-type"];
 const stake = betForm.elements['stake'];
-const submitButton = betForm.elements["submit-button"];
-console.log("odds : " + odds.value +" selection: "+ selection.value + " bet type: "+ betType.value); 
+const submitBet= betForm.elements["submit-bet"];
+console.log("odds : " + odds.value +" selection: "+ selection.value + " bet type: "+ betType.value + 'stake :' + stake.value); 
 
+submitBet.onclick = async () => {
 
-
-
-submitButton.onclick = async () => {
     const playerOdds = odds.value;
-    // console.log("the odds are: "+playerOdds);
-    // console.log("odds : " + odds.value +" selection: "+ selection.value + " bet type: "+ betType.value); 
-    
-    
-    const _odds = parseInt(odds.value*100);
-
-    let _betType = 0;
-
+    const contractOdds = parseInt(odds.value*100);
+    let contractBetType = 0;
 	let inputStake = stake.value;
-	
-
-	let mul = inputStake == 'Finney' ? 1 : inputStake == 'TenFinney' ? 10 : inputStake == 'HundredFinney' ? 100 : 1000; 
+	let mul = (inputStake == 'Finney') ? 1 : (inputStake == 'TenFinney') ? 10 : (inputStake == 'HundredFinney' )? 100 : 1000; 
 	let contractStake = inputStake == 'Finney' ? 0 : inputStake == 'TenFinney' ? 1 : inputStake == 'HundredFinney' ? 2 : 3; 
+    let playerStake = mul * parseInt(web3.utils.toWei('1', 'finney'));
+   
 
-    let playerStake = mul * web3.utils.toWei('1', 'finney');
-
-    if(betType.value == "Lay") {
-        _betType =1;
-
-		playerStake = playerStake * (parseFloat(odds.value)-1)
-		
-        // _stake = web3.utils.toWei(_stakeValue, 'szabo');
+    if(betType.value === "Lay") {
+        contractBetType = 1;
+		playerStake = parseInt(playerStake * (parseFloat(odds.value)-1));
     }
 
-	strStake = playerStake.toString();
 
-    let _selection = 0
+    let contractSelection = 0
+
     switch(selection.value) {
         case "Away":
-            _selection = 3
+            contractSelection = 3
           break;
         case "Draw":
-            _selection = 2
+            contractSelection = 2
           break;
         default:
-            _selection = 1
+            contractSelection = 1
       }
+   
 
-    
-    
+	
 
-    console.log("odds : " + _odds +" selection: "+ _selection + " bet type: "+ _betType + 'player Stake: '  + playerStake) ;   
-    // console.log(_stake)
-
-    await games.methods.placeBet(_betType, _selection,contractStake, _odds).send(
+    await games.methods.placeBet(contractBetType, contractSelection, contractStake, contractOdds).send(
         {from: ethereum.selectedAddress,
-         to: gamesAddress,
-         value: strStake,
+		to: gamesAddress,
+		value: '0',
+         
+         
     })
+
+
+	displayBalance(ethereum.selectedAddress);
 
     playerBets.innerHTML = `Your new bet:
 	 Odds = ${playerOdds}
-	 Selection = ${_selection}
-	 Bet Type = ${_betType}
-	 Stake = ${playerStake}
+	 Selection = ${selection.value}
+	 Bet Type = ${betType.value}
+	 Stake = ${playerStake/10**18} ETH
 	`  
 	var numberOfBets = await games.methods.getPlayerNumberOfBets(ethereum.selectedAddress).call()
 
@@ -1035,7 +1029,7 @@ submitButton.onclick = async () => {
 }
 
 
-
+// PAYOUT DISPLAY
 const playerPayout = document.getElementById("player-payout")
 const displayPayout = document.getElementById("display-payout")
 
@@ -1044,39 +1038,11 @@ displayPayout.onclick = async () => {
 	var drawPayout = await games.methods.getPayout(ethereum.selectedAddress, 2).call() / 10**18;
 	var awayPayout = await games.methods.getPayout(ethereum.selectedAddress, 3).call() / 10**18;
 
-	playerPayout.innerHTML = "Home win payout :" + homePayout + " Eth" + "<br />" +  " Draw win payout :" + drawPayout + " Eth" + "<br />" + " Away win payout :" + awayPayout + " Eth" ;
+	playerPayout.innerHTML = "Home Win Payout :" + homePayout + " ETH" + "<br />" +  " Draw Win Payout :" + drawPayout + " ETH" + "<br />" + " Away Win Payout :" + awayPayout + " ETH" ;
 
 }
 
-const payoutStatus = document.getElementById("payout-status")
-const getPayout = document.getElementById("get-payout")
 
-getPayout.onclick = async () => {
-
-	// games.methods.payout().call().then((results) => {
-	// 	console.log("success");
-	// 	payoutStatus.innerHTML = "Paid" ;
-	// }), (error) => {
-	// 	console.log("fail");
-	// 	payoutStatus.innerHTML = "Match not finished or not settled, Try later" ;
-
-	// }
-	
-	//handle catching erros
-
-	try {
-		var status = await games.methods.payout().call();
-		payoutStatus.innerHTML = "Paid" ;
-	} catch(error) {
-		console.log(error);
-		payoutStatus.innerHTML = "Match not finished , Try later" ;
-
-	}
-	
-    console.log(status);
-	
-
-}
 
 // const displayPlayerBets = document.getElementById("display-player-bets");
 // const displayBets = document.getElementById("display-bets");
@@ -1137,8 +1103,8 @@ getPayout.onclick = async () => {
 
 // }
 
-const thePlayerBets = document.getElementById("display-the-player-bets");
-const theBets = document.getElementById("get-the-player-bets");
+const thePlayerBets = document.getElementById("display-bets");
+const theBets = document.getElementById("display-bets-button");
 
 theBets.onclick = async () => {
 	var bets = await games.methods.getPlayerNumberOfBets(ethereum.selectedAddress).call();
@@ -1162,13 +1128,14 @@ function displayThePlayerBet( Bet) {
 
 	let _betType = (Bet[1]==0) ? "Back" : "Lay";
 	let _selection = (Bet[2]==1) ? "Home" : (Bet[2]==2) ? "Draw" : "Away";
-	let _odds = Bet[3]/100;
-	let _status = (Bet[4]==0) ? "Unmatched" : (Bet[4]==1) ? "Matched" : (Bet[4]==2) ? "Closed" :(Bet[4]==3) ? "Won" : "Lost" ;
-	let _betId = parseInt(Bet[5]);
+	let _stake = (Bet[3]==0) ? "0.001 ETH" : (Bet[3]==1) ? "0.01 ETH" : (Bet[3]==2) ? "0.1 ETH" : "1 ETH";
+	let _odds = Bet[4]/100;
+	let _status = (Bet[5]==0) ? "Unmatched" : (Bet[5]==1) ? "Matched" : (Bet[5]==2) ? "Closed" :(Bet[5]==3) ? "Won" : "Lost" ;
+	let _betId = parseInt(Bet[6]);
 
 	let _betAction = (Bet[1]==0) ? "Backed" : "Layed";
 
-	let _displayBet =  "Bet Id : " +_betId+ "<br/>" + "You " + _betAction + " " + _selection +" with odds : " + _odds + ", your bet is : " + _status;
+	let _displayBet =  "Bet Id : " + _betId + "<br/>" + "You " + _betAction + " " + _selection + " with " + _stake+ " at odds : " + _odds + ", your bet is : " + _status;
 
 	
 
@@ -1178,8 +1145,8 @@ function displayThePlayerBet( Bet) {
 	return _displayBet;
 }
 
-const playerNumberOfBets = document.getElementById("display-the-player-number-of-bets");
-const numberOfBets = document.getElementById("get-the-player-number-of-bets");
+const playerNumberOfBets = document.getElementById("number-of-bets");
+const numberOfBets = document.getElementById("number-of-bets-button");
 
 numberOfBets.onclick = async () => {
 	let numberOfBets = await games.methods.getPlayerNumberOfBets(ethereum.selectedAddress).call();
