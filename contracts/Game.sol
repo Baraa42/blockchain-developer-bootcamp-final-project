@@ -61,7 +61,7 @@ contract Games is Ownable {
     event ValueReceived(address user, uint amount);
 
 
-    /// @notice struct
+    /// @dev Game struct
     struct Game {
         address  owner;
         string teams;
@@ -70,6 +70,7 @@ contract Games is Ownable {
 
     }
 
+     /// @dev Bet struct
     struct Bet {
         address  player;
         BetType betType;
@@ -83,47 +84,42 @@ contract Games is Ownable {
     }
 
    
-    // Check if the selection of the bet is correct 
+    /// @dev Check if the selection of the bet is correct 
     modifier isValidBet(Selection selection) {
         require(selection != Selection.Open, "not a valid bet");
         _;
     }
-    // check if the game is over
+    /// @dev check if the game is over
     modifier isOver() {
         require(game.status == GameStatus.Over ,"game is not over");
         _;
     }
- 
-    // check if game is still open
+    /// @dev check if game is still open
     modifier isOpen() {
         require(game.status == GameStatus.Open, "Game is Over");
         _;
     }
-
+    /// @dev Check if bet is unmatched
     modifier isUnmatched(Bet memory bet) {
         require(bet.status == BetStatus.Unmatched, "Cant add already matched bet ");
         _;
     }
-
-
-   // we take _odds >100 then real odds is _odds /100 e.g 350 correspond to 3.5 odds
+   /// @dev check of odds are valid : we take _odds >100 then real odds is _odds /100 e.g 350 correspond to 3.5 odds
     modifier isValidOdds(uint _odds) {
         require(_odds>100, "unvalid odds");
         _;
     }
-    
-      // we take _odds >100 then real odds is _odds /100 e.g 350 correspond to 3.5 odds
+    /// @dev checks if BetId is valid
     modifier isValidId(uint _betId) {
         require(_betId>0 && _betId<=allBets.length, "unvalid Id");
         _;
     }
-    
+    /// @dev checks if bet number is valid
     modifier isValidBetNumber(uint _betNumber, address _player) {
         require(playerNumberOfBets[_player]>_betNumber, "unvalid Bet Number");
         _;
     }
-    
-    // check if user has enough funds 
+    //// @dev checks if user has enough funds to place the bet 
     modifier hasEnoughFunds(BetType _betType, address _player, Stake _stake, uint _odds ) {
         uint256 mul = _stake == Stake.OneFinney ? 1 : _stake == Stake.TenFinney ? 10 : _stake == Stake.HundredFinney ? 100 : 1000;
         
@@ -141,13 +137,14 @@ contract Games is Ownable {
         _;
         
     }
-    // check if game already paid   
+    /// @dev  check if game is already paid   
     modifier isNotPaid() {
         require(!paid, 'game already paid');
         _;
     }
 
-
+  
+    /// @param teams string describing the Game/Bet e.g Real Madrid vs Inter Milan
     constructor(string memory teams)  {
         
         admin = msg.sender;
@@ -157,9 +154,12 @@ contract Games is Ownable {
         game.winner = Selection.Open;
 
     }
+
+    /// GAME SECTION FUNCTIONS
       
-// admin change game status
-   function changeGameStatus( Selection winner) public onlyOwner isOpen()  {
+    /// @dev function that change game status
+    /// @param winner of the game ( 1=HOME, 2=DRAW, 3=AWAY)
+    function changeGameStatus( Selection winner) public onlyOwner isOpen()  {
         game.status = GameStatus.Over;
         game.winner = winner;
         uint totalBets = allBets.length;
@@ -187,7 +187,16 @@ contract Games is Ownable {
 
     }
 
-// deposits / withdrawals functions
+    /// @return string of the teams/object of the game
+    function getTeams() public view returns(string memory)  {
+        return game.teams;
+    }
+    
+
+    /// BANKING : DEPOSIT & WITHDRAWAL & BALANCE SECTION 
+
+    /// @notice deposit function, adds amount to user balance
+    /// @param amount to deposit 
     function deposit(uint amount) public payable {
         require(msg.value==amount, "unvalid amount");
         balances[msg.sender] += msg.value;
@@ -195,6 +204,8 @@ contract Games is Ownable {
         
     }
     
+    /// @notice withdraw function, substract amount from user balance and send the amount 
+    /// @param amount to withdraw 
     function withdraw(uint amount) public {
         require(balances[msg.sender] >= amount, "not enough funds");
         balances[msg.sender] -= amount;
@@ -204,6 +215,7 @@ contract Games is Ownable {
         
     }
     
+    /// @notice withdraw all function, send remaining balance back to user
     function withdrawAll() public {
         require(balances[msg.sender] > 0, "no funds");
         uint amount = balances[msg.sender];
@@ -214,11 +226,21 @@ contract Games is Ownable {
         
     }
     
+    
+    /// @param _player address
+    /// @return user balance
     function getBalance(address _player) public view returns(uint) {
         return balances[_player];
     }
 
-// functions for placing the bet
+
+    /// BETTING SECTION : FUNCTION FOR PLACING BETS
+
+    /// @dev callable function that places the bets
+    /// @param _betType  Back or Lay (Back = 0, Lay = 1)
+    /// @param _selection Bet selection (1 = HOME, 2 = DRAW, 3 = AWAY)
+    /// @param _stake Amount to bet (0 = 0.001 ETH, 1 = 0.01 ETH, 2 = 0.1 ETH, 3 = 1 ETH)
+    /// @param _odds must be > 100 then real odds is _odds /100 e.g 350 correspond to 3.5 odds
     function placeBet(BetType _betType, Selection _selection, Stake _stake, uint _odds )  external payable  hasEnoughFunds( _betType, msg.sender,  _stake,  _odds ) isValidBet(_selection) isOpen() isValidOdds(_odds)   {
         
         betCount++;
@@ -251,6 +273,12 @@ contract Games is Ownable {
 
 
     }
+
+    /// @dev internal function used to place back bets by placeBet
+    /// @param player  Address placing the bet
+    /// @param _selection Bet selection (1 = HOME, 2 = DRAW, 3 = AWAY)
+    /// @param _stake Amount to bet (0 = 0.001 ETH, 1 = 0.01 ETH, 2 = 0.1 ETH, 3 = 1 ETH)
+    /// @param _odds must be > 100 then real odds is _odds /100 e.g 350 correspond to 3.5 odds
     function placeBackBet( address  player, Selection _selection, Stake _stake, uint _odds) internal {
         uint map_stake = _stake == Stake.OneFinney ? 0 : _stake == Stake.TenFinney ? 1 : _stake == Stake.HundredFinney ? 2 : 3;
        
@@ -284,6 +312,12 @@ contract Games is Ownable {
             }
         
     }
+
+    /// @dev internal function used to place lay bets by placeBet
+    /// @param player  Address placing the bet
+    /// @param _selection Bet selection (1 = HOME, 2 = DRAW, 3 = AWAY)
+    /// @param _stake Amount to bet (0 = 0.001 ETH, 1 = 0.01 ETH, 2 = 0.1 ETH, 3 = 1 ETH)
+    /// @param _odds must be > 100 then real odds is _odds /100 e.g 350 correspond to 3.5 odds
     function placeLayBet( address  player, Selection _selection, Stake _stake, uint _odds) internal {
         uint map_stake = _stake == Stake.OneFinney ? 0 : _stake == Stake.TenFinney ? 1 : _stake == Stake.HundredFinney ? 2 : 3;
         backBetsId[_selection][_odds][map_stake].push(betCount);
@@ -321,6 +355,13 @@ contract Games is Ownable {
         
         
     }
+
+    /// @dev internal function used add the bet to allBets[] array and update different variables
+    /// @param player  Address placing the bet
+    /// @param _betType  Back or Lay (Back = 0, Lay = 1)
+    /// @param _selection Bet selection (1 = HOME, 2 = DRAW, 3 = AWAY)
+    /// @param _stake Amount to bet (0 = 0.001 ETH, 1 = 0.01 ETH, 2 = 0.1 ETH, 3 = 1 ETH)
+    /// @param _odds must be > 100 then real odds is _odds /100 e.g 350 correspond to 3.5 odds
     function addBet(address  player,BetType _betType, Selection _selection, Stake _stake, uint _odds ) internal {
         Bet memory playerBet = Bet(player, _betType, _selection, _stake, _odds, BetStatus.Unmatched, betCount);
         allBets.push(playerBet);
@@ -329,9 +370,59 @@ contract Games is Ownable {
         
     }  
 
+    /// @param _selection Bet selection (1 = HOME, 2 = DRAW, 3 = AWAY)
+    /// @param _stake Amount to bet (0 = 0.001 ETH, 1 = 0.01 ETH, 2 = 0.1 ETH, 3 = 1 ETH)
+    /// @param _odds must be > 100 then real odds is _odds /100 e.g 350 correspond to 3.5 odds
+    /// @return number of back bets available for particular parameters
+    function getBackBetsAvailable(Selection _selection, uint _odds, Stake _stake) public view returns(uint) {
+        uint map_stake = _stake == Stake.OneFinney ? 0 : _stake == Stake.TenFinney ? 1 : _stake == Stake.HundredFinney ? 2 : 4;
+        uint backbets = backBetsAvailable[_selection][_odds][map_stake];
+        return backbets;
+    }
+
+    /// @param _selection Bet selection (1 = HOME, 2 = DRAW, 3 = AWAY)
+    /// @param _stake Amount to bet (0 = 0.001 ETH, 1 = 0.01 ETH, 2 = 0.1 ETH, 3 = 1 ETH)
+    /// @param _odds must be > 100 then real odds is _odds /100 e.g 350 correspond to 3.5 odds
+    /// @return number of lay bets available for particular parameters
+    function getLayBetsAvailable(Selection _selection, uint _odds, Stake _stake) public view returns(uint) {
+        uint map_stake = _stake == Stake.OneFinney ? 0 : _stake == Stake.TenFinney ? 1 : _stake == Stake.HundredFinney ? 2 : 4;
+        uint laybets = layBetsAvailable[_selection][_odds][map_stake];
+        return laybets;
+    }
+
+    /// @param _player  Address placing the bet
+    /// @return number of bets placed by _player
+    function getPlayerNumberOfBets(address _player) public view returns(uint) {
+        return playerNumberOfBets[_player];
+    }
+
+    /// @param _betNumber the bet number _betNumber placed by the player
+    /// @param _player  Address placing the bet
+    /// @return The bet placed by the player
+    function getPlayerBet(address _player, uint _betNumber) public view isValidBetNumber(_betNumber, _player) returns(Bet memory) {
+        uint _betId = playerBets[_player][_betNumber] -1;
+        return allBets[_betId];
+        
+    }
 
 
-// increments the playerPayout of the player with potential winning 
+    /// @param _betId Id of the requested bet
+    /// @return The bet with the corresponding Id
+     function getBetStatus(uint _betId)  public view isValidId(_betId) returns(BetStatus)  {
+        return allBets[_betId-1].status;
+    }
+
+
+
+
+    /// PAYOUT SECTION : FUNCTION FOR HANDLING PLAYER POTENTIAL PAYOUT
+
+    /// @dev internal function increments the playerPayout of the player with potential winning ( not counting the stake) for the selection, used when the bet can bet matched
+    /// @param _player  Address placing the bet
+    /// @param _betType  Back or Lay (Back = 0, Lay = 1)
+    /// @param _selection Bet selection (1 = HOME, 2 = DRAW, 3 = AWAY)
+    /// @param _stake Amount to bet (0 = 0.001 ETH, 1 = 0.01 ETH, 2 = 0.1 ETH, 3 = 1 ETH)
+    /// @param _odds must be > 100 then real odds is _odds /100 e.g 350 correspond to 3.5 odds
     function incrementPotentialPayout(address  _player, uint _odds, Selection _selection, BetType _betType, Stake _stake) internal {
         uint256 mul = _stake == Stake.OneFinney ? 1 : _stake == Stake.TenFinney ? 10 : _stake == Stake.HundredFinney ? 100 : 1000;
 
@@ -355,7 +446,10 @@ contract Games is Ownable {
         }
     }
 
-// increment playerPayout with his stake
+    /// @dev internal function increments the playerPayout of the player with his stake, used when the bet can't be matched
+    /// @param _betType  Back or Lay (Back = 0, Lay = 1)
+    /// @param _stake Amount to bet (0 = 0.001 ETH, 1 = 0.01 ETH, 2 = 0.1 ETH, 3 = 1 ETH)
+    /// @param _odds must be > 100 then real odds is _odds /100 e.g 350 correspond to 3.5 odds
     function incrementWithStake(address  _player, uint _odds,  BetType _betType, Stake _stake) internal {
         uint256 mul = _stake == Stake.OneFinney ? 1 : _stake == Stake.TenFinney ? 10 : _stake == Stake.HundredFinney ? 100 : 1000;
         if (_betType == BetType.Back) {
@@ -371,7 +465,14 @@ contract Games is Ownable {
 
         }
     }
-// decrements playerPayout to take into account the bet is matched
+
+    
+    /// @dev internal function decrements player payout with his initial stake, used when the bet can be matched
+    /// @param _player  Address placing the bet
+    /// @param _betType  Back or Lay (Back = 0, Lay = 1)
+    /// @param _selection Bet selection (1 = HOME, 2 = DRAW, 3 = AWAY)
+    /// @param _stake Amount to bet (0 = 0.001 ETH, 1 = 0.01 ETH, 2 = 0.1 ETH, 3 = 1 ETH)
+    /// @param _odds must be > 100 then real odds is _odds /100 e.g 350 correspond to 3.5 odds
     function decrementWithStake(address  _player, uint _odds, Selection _selection, BetType _betType, Stake _stake) internal {
         uint256 mul = _stake == Stake.OneFinney ? 1 : _stake == Stake.TenFinney ? 10 : _stake == Stake.HundredFinney ? 100 : 1000;
 
@@ -401,49 +502,7 @@ contract Games is Ownable {
 
     }
 
-
-
-//   returns current player current payout
-    function getPayout(address  _player, Selection _selection) public view returns(uint) {
-        uint _payout = playerPayout[_player][_selection];
-        return _payout;
-    }  
-
-    function getBackBetsAvailable(Selection _selection, uint _odds, Stake _stake) public view returns(uint) {
-        uint map_stake = _stake == Stake.OneFinney ? 0 : _stake == Stake.TenFinney ? 1 : _stake == Stake.HundredFinney ? 2 : 4;
-        uint backbets = backBetsAvailable[_selection][_odds][map_stake];
-        return backbets;
-    }
-
-    function getLayBetsAvailable(Selection _selection, uint _odds, Stake _stake) public view returns(uint) {
-        uint map_stake = _stake == Stake.OneFinney ? 0 : _stake == Stake.TenFinney ? 1 : _stake == Stake.HundredFinney ? 2 : 4;
-        uint laybets = layBetsAvailable[_selection][_odds][map_stake];
-        return laybets;
-    }
-
-    function getPlayerNumberOfBets(address _player) public view returns(uint) {
-        return playerNumberOfBets[_player];
-    }
-
-
-    
-    function getPlayerBet(address _player, uint _betNumber) public view isValidBetNumber(_betNumber, _player) returns(Bet memory) {
-        uint _betId = playerBets[_player][_betNumber] -1;
-        return allBets[_betId];
-        
-    }
-    
-    function getTeams() public view returns(string memory)  {
-        return game.teams;
-    }
-    
-    function getBetStatus(uint _betId)  public view isValidId(_betId) returns(BetStatus)  {
-        return allBets[_betId-1].status;
-    }
-
-
-
-    // update balances
+    /// @dev internal function that updates players balances when the game is finished, called when admin changes the game status
     function adminPayout() internal {
         
        
@@ -456,6 +515,16 @@ contract Games is Ownable {
 
     }
     
+    /// @dev returns current player current payout for the selection
+    /// @param _player  Address placing the bet
+    /// @param _selection Bet selection (1 = HOME, 2 = DRAW, 3 = AWAY)
+    function getPayout(address  _player, Selection _selection) public view returns(uint) {
+        uint _payout = playerPayout[_player][_selection];
+        return _payout;
+    }  
+
+    
+    /// FALLBACK FUNCTIONS
     receive() external payable {
         
         emit ValueReceived(msg.sender, msg.value);
