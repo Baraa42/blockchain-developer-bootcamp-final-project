@@ -2,30 +2,47 @@
 pragma solidity >=0.8.0 <0.9.0;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
+
+
+/// @title Betting contract for one game
+/// @author Baraa Elalami
+/// @dev Order matching algorithm is basic allowing users to bet only one of the 4 amounts : 0.001 ETH, 0.01 ETH, 0.1 ETH, 1 ETH
 contract Games is Ownable {
 
+    /// @dev Admin who decide the outcome of the game
     address  public admin;
     Game public game;
-    //uint backBetId;
-    //uint layBetId;
+    /// @notice trcks the amount of bets
     uint public betCount;
-    // hold all bets
+    /// @notice array the hold all bets
     Bet[] public allBets;
-    // track addresses of all players
+    /// @notice track addresses of all players
     address[] public players;
-    // track if the game is paid
+    /// @notice track if the game is paid
     bool paid = false;
 
-    mapping(address => uint[]) playerBets; // tracks the id of players bets
-    mapping(Selection => mapping( uint => mapping(uint => uint))) public backBetsAvailable; // tracks amount of back bet availble : Selection => Odds => => stake amount
-    mapping(Selection => mapping( uint => mapping(uint => uint))) public layBetsAvailable;// tracks amount of lay bet availble :  Selection => Odds => amount
-    mapping(Selection => mapping( uint => mapping(uint => uint []))) public backBetsId; // tracks the Bet id of the backBets : Selection => Odds =>  stake => uint [id]   uint backBetId = backBetsId[_selection][_odds][backId][map_stake]; 
-    mapping(Selection => mapping( uint => mapping(uint => uint []))) public layBetsId ; // tracks the Lay id of the backBets : Selection => Odds => stake => uint [id]
-    mapping(Selection => mapping( uint => mapping(uint => uint))) public firstIndexOfBackBet; // track Id of first back bet available in the backBetsId[selection][odds][stake],  Selection => Odds=> stake  => Id   uint backId = firstIndexOfBackBet[_selection][_odds][map_stake];
-    mapping(Selection => mapping( uint => mapping(uint => uint))) public firstIndexOfLayBet; // track Id of first back bet available in the backBetsId[selection][odds][stake],  Selection => Odds => stake => Id
-    mapping(address => mapping(Selection => uint)) playerPayout; // 
-    mapping(address => uint) playerNumberOfBets; // tracks the amount of bets the player placed
-    mapping(address => uint) balances; // tracks user balance
+
+    /// @notice tracks the id of the players bets
+    mapping(address => uint[]) playerBets; 
+    /// @notice  tracks amount of back bets available to match : Selection => Odds => => stake amount
+    mapping(Selection => mapping( uint => mapping(uint => uint))) public backBetsAvailable; 
+    /// @notice  tracks amount of lay bets available to match : Selection => Odds => => stake amount
+    mapping(Selection => mapping( uint => mapping(uint => uint))) public layBetsAvailable;
+    /// @notice tracks the Bet id of the backBets : Selection => Odds =>  stake => uint [id] | uint backBetId = backBetsId[_selection][_odds][backId][map_stake]
+    mapping(Selection => mapping( uint => mapping(uint => uint []))) public backBetsId; 
+    /// @notice tracks the Bet id of the layBets : Selection => Odds =>  stake => uint [id]  | uint layBetId = backBetsId[_selection][_odds][backId][map_stake]
+    mapping(Selection => mapping( uint => mapping(uint => uint []))) public layBetsId ; 
+    /// @notice  track Id of first back bet available in the backBetsId[selection][odds][stake],  Selection => Odds=> stake  => Id   uint backId = firstIndexOfBackBet[_selection][_odds][map_stake];
+    mapping(Selection => mapping( uint => mapping(uint => uint))) public firstIndexOfBackBet;
+    /// @notice  track Id of first lay bet available in the layBetsId[selection][odds][stake],  Selection => Odds=> stake  => Id   uint layId = firstIndexOfBackBet[_selection][_odds][map_stake];
+    mapping(Selection => mapping( uint => mapping(uint => uint))) public firstIndexOfLayBet;
+    /// @notice tracks the payout of the player for each outcome
+    mapping(address => mapping(Selection => uint)) playerPayout; 
+    /// @notice tracks the amount of bets the player placed
+    mapping(address => uint) playerNumberOfBets; 
+    /// @notice tracks user balance
+    mapping(address => uint) balances; 
+
 
     enum BetType {Back, Lay}
     enum Selection {Open, Home, Draw, Away}
@@ -33,6 +50,7 @@ contract Games is Ownable {
     enum BetStatus {Unmatched, Matched, Closed, Win, Lose}
     enum Stake{ OneFinney, TenFinney, HundredFinney, OneEther}
    
+
     event NewStatus();
     event GameWinner(Selection selection);
     event unmatchedBetCreated(address _player, uint256 _odds, Selection _selection, BetType _betType);
@@ -42,6 +60,8 @@ contract Games is Ownable {
     event Payout(Game _game);
     event ValueReceived(address user, uint amount);
 
+
+    /// @notice struct
     struct Game {
         address  owner;
         string teams;
