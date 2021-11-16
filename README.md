@@ -14,9 +14,9 @@ Technologies used include:
 
 ## Description 
 
-The project implements a P2P betting contract for any event with 3 outcomes ( ex football game with Home/Win/Draw).
+The project implements a P2P betting contract for any event with 3 outcomes ( e.g football game with Home/Win/Draw).
 
-One of the main limitations here is that the betting me contract is deployed by the admin (contract owner), initially the game status is Open and only the owner can change it (this functionality should be changed in the futur and the status of the game should be changed by an oracle like Chainlink)
+One of the main limitations here is that the betting contract is deployed by the admin (contract owner), initially the game status is Open and only the owner can change it (this functionality should be changed in the futur and the status of the game should be changed by an oracle like Chainlink)
 
 The order matching algorithm is simplified here and players can only bet one of these stakes :
   - 1 Ether
@@ -26,7 +26,7 @@ The order matching algorithm is simplified here and players can only bet one of 
 
 The user/player first deposit an initial amount to the contract, afterwards his balance is updated. He can also withdraw his balance or part of it at anytime.
 
-The user/player can then place bets if he has enough balance, one the bet is placed the balance is updated, and his potential payout is also updated according to the Bet amount and odds.
+The user/player can then place bets if he has enough balance, once the bet is placed the balance is updated and his potential payout is also updated according to the Bet amount and odds.
 
 When a bet is placed, the contract checks if there is an already existing player who wants to bet on the other side and matches the 2 players, otherwise the bet is marked as unmatched and waits for another player to match it.
  
@@ -43,7 +43,7 @@ When a bet is placed, the contract checks if there is an already existing player
     - Game.js : Truffle tests
    
   4. node_modules :
-    - OpenZeppelin contract
+    - Contains OpenZeppelin Ownable contract
 
   5. docs - additional readme documents :
     - 
@@ -59,7 +59,7 @@ When a bet is placed, the contract checks if there is an already existing player
 ## Download, install and build steps
 ### Downloading
 1. Open a terminal window
-2. Clone and pull down this repository into a branch via git - `git clone url.ToRepository`
+2. Clone and pull down this repository into a branch via git - `git clone git@github.com:Bibix93/blockchain-developer-bootcamp-final-project.git`
 3. Go to the directory you cloned into - `cd blockchain-developer-bootcamp-final-project`
 
 <!-- ### Building the solution for the first time
