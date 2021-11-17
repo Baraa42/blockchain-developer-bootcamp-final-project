@@ -2,12 +2,13 @@
 pragma solidity >=0.8.0 <0.9.0;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "./Balances.sol";
 
 
 /// @title Betting contract for one game
 /// @author Baraa Elalami
 /// @dev Order matching algorithm is basic allowing users to bet only one of the 4 amounts : 0.001 ETH, 0.01 ETH, 0.1 ETH, 1 ETH
-contract PlaceBet is Ownable {
+contract PlaceBet is Ownable, Balances {
 
     /// @dev Admin who decide the outcome of the game
     address  public admin;
@@ -40,8 +41,7 @@ contract PlaceBet is Ownable {
     mapping(address => mapping(Selection => uint)) playerPayout; 
     /// @notice tracks the amount of bets the player placed
     mapping(address => uint) playerNumberOfBets; 
-    /// @notice tracks user balance
-    mapping(address => uint) balances; 
+    
 
 
     enum BetType {Back, Lay}
@@ -55,8 +55,6 @@ contract PlaceBet is Ownable {
     event GameWinner(Selection selection);
     event unmatchedBetCreated(address _player, uint256 _odds, Selection _selection, BetType _betType);
     event BetMatched(address _backer, address _layer, uint odds, Selection _selection);
-    event PlayerDeposit(address player, uint amount);
-    event PlayerWithdrawal(address player, uint amount);
     event Payout(Game _game);
     event ValueReceived(address user, uint amount);
 
@@ -192,47 +190,6 @@ contract PlaceBet is Ownable {
         return game.teams;
     }
     
-
-    /// BANKING : DEPOSIT & WITHDRAWAL & BALANCE SECTION 
-
-    /// @notice deposit function, adds amount to user balance
-    /// @param amount to deposit 
-    function deposit(uint amount) public payable {
-        require(msg.value==amount, "unvalid amount");
-        balances[msg.sender] += msg.value;
-        emit PlayerDeposit(msg.sender, msg.value);
-        
-    }
-    
-    /// @notice withdraw function, substract amount from user balance and send the amount 
-    /// @param amount to withdraw 
-    function withdraw(uint amount) public {
-        require(balances[msg.sender] >= amount, "not enough funds");
-        balances[msg.sender] -= amount;
-        payable(msg.sender).transfer(amount);
-        emit PlayerWithdrawal(msg.sender, amount);
-        
-        
-    }
-    
-    /// @notice withdraw all function, send remaining balance back to user
-    function withdrawAll() public {
-        require(balances[msg.sender] > 0, "no funds");
-        uint amount = balances[msg.sender];
-        balances[msg.sender] =0;
-        payable(msg.sender).transfer(amount);
-        emit PlayerWithdrawal(msg.sender, amount);
-        
-        
-    }
-    
-    
-    /// @param _player address
-    /// @return user balance
-    function getBalance(address _player) public view returns(uint) {
-        return balances[_player];
-    }
-
 
     /// BETTING SECTION : FUNCTION FOR PLACING BETS
 
