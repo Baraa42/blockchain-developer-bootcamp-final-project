@@ -1,0 +1,2 @@
+Test Network = RINKEBY
+Game Contract address = '0x2925cB8e322700ED83A768CDb22384b10db445cb'
