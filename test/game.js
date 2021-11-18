@@ -1,5 +1,16 @@
 const Games = artifacts.require("Games");
 
+/// There is 20 tests here that follow to betting logic,
+/// and they build on each other meaning that for n > m : Test(n) takes into account the state changes made by Test(m)
+/// Tests check in order for  : 
+/// Test 1-4 contract deployment variables
+/// Test 5-7 Deposit and withdrawal functions
+/// Test 8-17 Bet placement functions
+/// Test 18 Payout updates caused by placing bets
+/// Test 19 Only owner can change the game status
+/// Test 20 Owner change game status
+/// Test 20 Balance update after game is settled
+
 contract('Games', (accounts) => {
 
   it('should make account[0] the admin', async () => {
