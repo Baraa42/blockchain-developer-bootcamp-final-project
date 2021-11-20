@@ -860,7 +860,6 @@ window.addEventListener("load", async () => {
 		balance.innerHTML = 'Your Balance : ' + ethBalance + '  ETH';
         mmDetected.innerHTML = "Log in to play"	
 
-
     }	
 
     else {
@@ -889,10 +888,27 @@ mmEnable.onclick  = async () => {
 
 window.addEventListener("load", async ()=> {
    
-	let h2 = document.getElementById('h2')
-	var teams = await games.methods.getTeams().call();
-	
+	let h2 = document.getElementById('game-object');
+	let h3 = document.getElementById('game-status');
+	let teams = await games.methods.getTeams().call();
+	let game = await games.methods.game().call();
 	h2.innerHTML += ' ' + teams;
+	let winner = game[3];
+	switch(winner){
+		case '0' :
+            h3.innerHTML = 'The game is open place your bets !!';
+          break;
+        case '1':
+            h3.innerHTML = 'The game is finished home team won !!';
+          break;
+		case '2':
+            h3.innerHTML = 'The game is ended in draw !!';
+          break;
+        default:
+            h3.innerHTML = 'The game is finished away team won !!';
+
+
+	}
 })
 
 /// BALANCE
@@ -934,21 +950,13 @@ withdrawButton.onclick = async () => {
 	const withdrawAmount = web3.utils.toWei(withdraw.value, 'ether');
 	console.log(withdrawAmount)
 	
-	
-
 	await games.methods.withdraw(withdrawAmount).send(
         {from: ethereum.selectedAddress,
          to: gamesAddress,
          value: '0',
     });
-
-
-
-
 	
 	displayBalance(ethereum.selectedAddress);
-
-
 
 
 }
@@ -962,13 +970,10 @@ withdrawAllButton.onclick = async () => {
          to: gamesAddress,
          value: '0',
     });
-
-
 	displayBalance(ethereum.selectedAddress);
-
 }
-// PLACING BET
 
+// PLACING BET
 const playerBets = document.getElementById("player-bets");
 const betForm = document.getElementById("bet-form");
 const odds = betForm.elements["odds"];
@@ -1057,66 +1062,7 @@ displayPayout.onclick = async () => {
 }
 
 
-
-// const displayPlayerBets = document.getElementById("display-player-bets");
-// const displayBets = document.getElementById("display-bets");
-
-// displayBets.onclick = async () => {
-// 	var numberOfBets = await games.methods.getPlayerNumberOfBets(ethereum.selectedAddress).call();
-
-// 	for(let i=0; i < numberOfBets; i++) {
-// 		var bet = await games.methods.getPlayerBet(ethereum.selectedAddress, i+1).call();
-// 		var _betType;
-// 		var _selection;
-// 		var _odds;
-// 		var _status;
-
-// 		if ( bet[1] == 0) {
-// 			_betType = "Back";
-// 		} else {
-// 			_betType = "Lay";
-
-// 		}
-
-// 		if (bet[2]==1) {
-// 			_selection = "Home";
-// 		} else if (bet[2]==2) {
-// 			_selection = "Draw";
-
-// 		} else {
-// 			_selection = "Away";
-// 		}
-
-// 		_odds = bet[3] / 100;
-
-// 		if (bet[4]==0) {
-// 			_status = "Unmatched";
-// 		} else if (bet[4]==1) {
-// 			_status = "Matched";
-
-// 		} else if(bet[4] ==2) {
-// 			_status = "Closed";
-// 		} else if(bet[4] ==3) {
-// 			_status = "Win";
-// 		} else  {
-// 			_status = "Lose";
-// 		}
-
-
-// 		if(_betType =="Back") {
-// 			displayPlayerBets.innerHTML += "You backed  " + _selection + " with odds: " + _odds +". Your bet is: " + _status +"<br />";
-
-// 		} else {
-// 			displayPlayerBets.innerHTML += "You layed  " + _selection + " with odds: " + _odds +". Your bet is: " + _status +"<br />";
-
-// 		}
-
-// 	}
-	
-	
-
-// }
-
+// BETS DISPLAY
 const thePlayerBets = document.getElementById("display-bets");
 const theBets = document.getElementById("display-bets-button");
 
