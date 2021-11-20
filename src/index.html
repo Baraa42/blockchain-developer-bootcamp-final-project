@@ -6,84 +6,126 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Betting Dapp</title>
     <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     
-    <h1>Betting</h1>
-    <!-- 1. detect Metamask -->
-
-    <h2>Connect to Metamask :</h2>
-    <div id="mm-detected"></div>
-
-    <button id="mm-connect">Connect to Metamask</button>
-    <div id="mm-current-account"></div>
-
-    <h2>The match :</h2>
-    <h3 id="match-id" style="text-align:center"></h3>
-
-    <h2>Banking:</h2>
-    <div id='banking'> 
-        <div id = 'balance'> Your Balance : </div>
-
-        <input id="deposit" type="number" step="0.01" min="0.001" placeholder="Amount in ETH"/>
-        <button id="deposit-button">Deposit</button>
+    <div class='header'>
         
-        <input id="withdraw" type="number" step="0.01" min="0.001" placeholder="Amount in ETH"/>
-        <button id="withdraw-button">Withdraw</button>
-
-        <button id="withdraw-all">Withdraw All Balance</button>
-
+        <h1>Betting Dapp</h1>
+        <h2 id='h2' style="text-align:center">Event :</h2>
+        <div class='connect'>
+            
+            <h2>Login to Metamask :</h2>
+            <div id="mm-detected" class='text'></div>
+            <div id="mm-current-account" class='text'></div>
+            <button id="mm-connect">login</button>
+        </div>
+        
     </div>
 
-    <h2>Place your bet :</h2>
-    <form id="bet-form" >
 
-        <input id="odds" type="number" step="0.01" min="1" placeholder="Odds"/>
+    <div class='container'>
+        <h2>Banking:</h2>
+        <div id='banking'> 
+            <div id ='balance' class='text'> Your Balance : </div>
+            <div class='money-flow'>
 
-        <label for="bet-type">Bet Type : </label>
-        <select id="bet-type">
-            <option value="Back">Back</option>
-            <option value="Lay">Lay</option>
-        </select>
+                <div class='money-action'>
+                    <input id="deposit" type="number" step="0.01" min="0.001" placeholder="Amount in ETH"/>
+                    <button id="deposit-button">Deposit</button>
+                </div>
 
-        <label for="selection">Selection : </label>
-        <select id="selection">
-            <option value="Home">Home</option>
-            <option value="Draw">Draw</option>
-            <option value="Away">Away</option>
-        </select>
+                <div class='money-action'>
+                    <input id="withdraw" type="number" step="0.01" min="0.001" placeholder="Amount in ETH"/>
+                    <button id="withdraw-button">Withdraw</button>
+                </div>   
+                
+                <button id="withdraw-all">Withdraw All Balance</button>
+               
+            </div>
+            
 
-        <label for="stake">Stake : </label>
-        <select id="stake">
-            <option value="Ether">1 Ether</option>
-            <option value="HundredFinney"> 0.1 Ether</option>
-            <option value="TenFinney">0.01 Ether</option>
-            <option value="Finney">0.001 Ether</option>
-        </select>
-
-        <button type="button" id="submit-bet">Place Bet</button>
-    </form>
+        </div>
+    </div>
 
 
+    <div class='container'>
+        <h2>Place your bet :</h2>
+        
+        <form id="bet-form" class=' placing-bet'>
+        
+            <div class='bet-option'>
+                <label for="odds" class='text'>Select odds: </label>
+                <input id="odds" type="number" step="0.01" min="1" placeholder="Odds"/>
+            </div>
+           
+        
 
-    <h2>Your number of  bets :</h2>
-    <div id="number-of-bets"> </div>
-    <button id = "number-of-bets-button"> Get number of bets</button> 
+            <div class='bet-option'>
+                <label for="bet-type" class='text'>Bet Type : </label>
+                <select id="bet-type">
+                <option value="Back">Back</option>
+                <option value="Lay">Lay</option>
+                </select>
+            </div>
+            
+        
+
+            <div class='bet-option'>  
+                <label for="selection" class='text'>Selection : </label>
+                <select id="selection">
+                    <option value="Home">Home</option>
+                    <option value="Draw">Draw</option>
+                    <option value="Away">Away</option>
+                </select>
+            </div>
+
+
+            <div class='bet-option'>
+                <label for="stake" class='text'>Stake :</label>
+                <select id="stake">
+                    <option value="Ether">1 Ether</option>
+                    <option value="HundredFinney"> 0.1 Ether</option>
+                    <option value="TenFinney">0.01 Ether</option>
+                    <option value="Finney">0.001 Ether</option>
+                </select>
+            </div>
+        
+
+            
+            <button type="button" id="submit-bet">Place Bet</button>
+            
+        
+        </form>
+        
+    </div>    
+
+
+    <div class='container'>
+        <h2>Your number of  bets :</h2>
+        <div id="number-of-bets" class='text'> </div>
+        <button id = "number-of-bets-button"> Get number of bets</button> 
 
 
 
-    <h2>Your bets :</h2>
-    <button id = "display-bets-button"> Display my bets</button> 
-    <div id="display-bets"> </div>
-    <div id="player-bets"></div>
+        <h2>Your bets :</h2>
+        <button id = "display-bets-button"> Display my bets</button> 
+        <div id="display-bets" class='text'> </div>
+        <div id="player-bets" class='text'></div>
+    </div>
 
 
-
-
-    <h2>Your Payout :</h2>
-    <button id="display-payout"> Display Payout</button>
-    <div id="player-payout"></div>
-
+    <div class='container'>
+        <h2>Your Payout :</h2>
+        <button id="display-payout"> Display Payouts</button>
+        <div class="payout">
+            <div id="player-home-payout" class='text bet-payout'>Home Win Payout</div>
+            <div id="player-draw-payout" class='text bet-payout'>Draw Win Payout</div>
+            <div id="player-away-payout" class='text bet-payout'>Away Win Payout</div>
+        </div>
+        
+    </div>
  
 
    

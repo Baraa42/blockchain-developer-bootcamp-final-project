@@ -850,23 +850,22 @@ games.setProvider(window.ethereum)
 // CONNECTION SECTION
 
 window.addEventListener("load", async () => {
-	
-
+	let mmDetected = document.getElementById("mm-detected")
     if(typeof window.ethereum !== 'undefined') {
-        console.log("Metamask detected")
+        
 		await ethereum.request({method: 'eth_requestAccounts'})
-        let mmDetected = document.getElementById("mm-detected")
 		let balance = document.getElementById('balance');
 		var playerBalance = await games.methods.getBalance(ethereum.selectedAddress ).call();
 		let ethBalance = playerBalance / 10**18;
 		balance.innerHTML = 'Your Balance : ' + ethBalance + '  ETH';
-        mmDetected.innerHTML = "Metamask has been detected"	
+        mmDetected.innerHTML = "Log in to play"	
 
 
     }	
 
     else {
         console.log("Metamask not available, install it")
+		mmDetected.innerHTML = "Metamask not available, please install it"
         alert("install metamask")
     }
 })
@@ -874,16 +873,26 @@ window.addEventListener("load", async () => {
 
 const mmEnable = document.getElementById("mm-connect")
 mmEnable.onclick  = async () => {
-    await ethereum.request({method: 'eth_requestAccounts'})
-    const mmCurrentAccount = document.getElementById("mm-current-account")
-    mmCurrentAccount.innerHTML = "Here is you current account: " + ethereum.selectedAddress 
+	let mmCurrentAccount = document.getElementById("mm-current-account");
+	let mmDetected = document.getElementById("mm-detected");
+	if(typeof window.ethereum !== 'undefined') {
+		await ethereum.request({method: 'eth_requestAccounts'})
+    	mmCurrentAccount.innerHTML = "Logged in to " + '"' + ethereum.selectedAddress + '"'
+		mmDetected.innerHTML = ""	
 
+	} else {
+		alert("install metamask")
+
+	}
+    
 }
 
 window.addEventListener("load", async ()=> {
-    let match = document.getElementById("match-id");
+   
+	let h2 = document.getElementById('h2')
 	var teams = await games.methods.getTeams().call();
-	match.innerHTML = teams;
+	
+	h2.innerHTML += ' ' + teams;
 })
 
 /// BALANCE
@@ -1030,15 +1039,20 @@ submitBet.onclick = async () => {
 
 
 // PAYOUT DISPLAY
-const playerPayout = document.getElementById("player-payout")
-const displayPayout = document.getElementById("display-payout")
+const playerHomePayout = document.getElementById("player-home-payout");
+const playerDrawPayout = document.getElementById("player-draw-payout");
+const playerAwayPayout = document.getElementById("player-away-payout");
+const displayPayout = document.getElementById("display-payout");
 
 displayPayout.onclick = async () => {
 	var homePayout = await games.methods.getPayout(ethereum.selectedAddress, 1).call() / 10**18;
 	var drawPayout = await games.methods.getPayout(ethereum.selectedAddress, 2).call() / 10**18;
 	var awayPayout = await games.methods.getPayout(ethereum.selectedAddress, 3).call() / 10**18;
+	console.log(homePayout)
 
-	playerPayout.innerHTML = "Home Win Payout :" + homePayout + " ETH" + "<br />" +  " Draw Win Payout :" + drawPayout + " ETH" + "<br />" + " Away Win Payout :" + awayPayout + " ETH" ;
+	playerHomePayout.innerHTML = "Home Win Payout :" + homePayout + " ETH" + "<br />" ;
+	playerDrawPayout.innerHTML = "Draw Win Payout :" + drawPayout + " ETH" + "<br />" ;
+	playerAwayPayout.innerHTML = "Away Win Payout :" + awayPayout + " ETH" + "<br />" ;
 
 }
 
