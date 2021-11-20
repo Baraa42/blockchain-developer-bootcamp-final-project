@@ -1096,7 +1096,7 @@ function displayThePlayerBet( Bet) {
 
 	let _betAction = (Bet[1]==0) ? "Backed" : "Layed";
 
-	let _displayBet =  "Bet Id : " + _betId + "<br/>" + "You " + _betAction + " " + _selection + " with " + _stake+ " @ " + _odds + ", your bet is : " + _status;
+	let _displayBet =  "Bet Id : " + _betId + "<br/>" + "You " + _betAction + " " + _selection + " with " + _stake+ " @" + _odds + ", your bet is '" + _status + "'.";
 
 	
 
