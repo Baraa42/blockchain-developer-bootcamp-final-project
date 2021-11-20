@@ -981,7 +981,6 @@ const selection = betForm.elements["selection"];
 const betType = betForm.elements["bet-type"];
 const stake = betForm.elements['stake'];
 const submitBet= betForm.elements["submit-bet"];
-console.log("odds : " + odds.value +" selection: "+ selection.value + " bet type: "+ betType.value + 'stake :' + stake.value); 
 
 submitBet.onclick = async () => {
 
@@ -1028,17 +1027,17 @@ submitBet.onclick = async () => {
 	displayBalance(ethereum.selectedAddress);
 
     playerBets.innerHTML = `Your new bet:
-	 Odds = ${playerOdds}
-	 Selection = ${selection.value}
-	 Bet Type = ${betType.value}
-	 Stake = ${playerStake/10**18} ETH
+	 Odds = ${playerOdds},
+	 Selection = ${selection.value},
+	 Bet Type = ${betType.value},
+	 Stake = ${playerStake/10**18} ETH.
 	`  
 	var numberOfBets = await games.methods.getPlayerNumberOfBets(ethereum.selectedAddress).call()
 
-    console.log(numberOfBets)
+    
 
 	var lastBet = await games.methods.getPlayerBet(ethereum.selectedAddress, numberOfBets-1).call()
-	console.log(lastBet)
+
 
 }
 
@@ -1066,6 +1065,7 @@ displayPayout.onclick = async () => {
 const thePlayerBets = document.getElementById("display-bets");
 const theBets = document.getElementById("display-bets-button");
 
+
 theBets.onclick = async () => {
 	var bets = await games.methods.getPlayerNumberOfBets(ethereum.selectedAddress).call();
 	console.log("number of bets :" + bets);
@@ -1079,6 +1079,7 @@ theBets.onclick = async () => {
 			thePlayerBets.innerHTML += displayThePlayerBet(Bet) + "<br/>";
 			
 		}
+		playerBets.innerHTML = ''
 
 	}
 }
@@ -1095,7 +1096,7 @@ function displayThePlayerBet( Bet) {
 
 	let _betAction = (Bet[1]==0) ? "Backed" : "Layed";
 
-	let _displayBet =  "Bet Id : " + _betId + "<br/>" + "You " + _betAction + " " + _selection + " with " + _stake+ " at odds : " + _odds + ", your bet is : " + _status;
+	let _displayBet =  "Bet Id : " + _betId + "<br/>" + "You " + _betAction + " " + _selection + " with " + _stake+ " @ " + _odds + ", your bet is : " + _status;
 
 	
 
@@ -1112,4 +1113,5 @@ numberOfBets.onclick = async () => {
 	let numberOfBets = await games.methods.getPlayerNumberOfBets(ethereum.selectedAddress).call();
 
 	playerNumberOfBets.innerHTML = "Your number of bets is :" + numberOfBets;
+	
 }
