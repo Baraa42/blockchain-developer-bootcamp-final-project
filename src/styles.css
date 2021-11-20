@@ -124,3 +124,10 @@ input {
 input:focus {
     background-color: #EDC913;
   }
+
+#balance {
+    border: 2px solid white;
+    width: 200px;
+    padding: 5px 10px ;
+
+}
