@@ -1025,6 +1025,7 @@ submitBet.onclick = async () => {
 
 
 	displayBalance(ethereum.selectedAddress);
+	displayPlayerPayout ();
 
     playerBets.innerHTML = `Your new bet:
 	 Odds = ${playerOdds},
@@ -1048,7 +1049,8 @@ const playerDrawPayout = document.getElementById("player-draw-payout");
 const playerAwayPayout = document.getElementById("player-away-payout");
 const displayPayout = document.getElementById("display-payout");
 
-displayPayout.onclick = async () => {
+async function displayPlayerPayout () {
+	
 	var homePayout = await games.methods.getPayout(ethereum.selectedAddress, 1).call() / 10**18;
 	var drawPayout = await games.methods.getPayout(ethereum.selectedAddress, 2).call() / 10**18;
 	var awayPayout = await games.methods.getPayout(ethereum.selectedAddress, 3).call() / 10**18;
@@ -1057,8 +1059,20 @@ displayPayout.onclick = async () => {
 	playerHomePayout.innerHTML = "Home Win Payout :" + homePayout + " ETH" + "<br />" ;
 	playerDrawPayout.innerHTML = "Draw Win Payout :" + drawPayout + " ETH" + "<br />" ;
 	playerAwayPayout.innerHTML = "Away Win Payout :" + awayPayout + " ETH" + "<br />" ;
-
 }
+
+displayPayout.onclick = async => { displayPlayerPayout () }
+	
+	// var homePayout = await games.methods.getPayout(ethereum.selectedAddress, 1).call() / 10**18;
+	// var drawPayout = await games.methods.getPayout(ethereum.selectedAddress, 2).call() / 10**18;
+	// var awayPayout = await games.methods.getPayout(ethereum.selectedAddress, 3).call() / 10**18;
+	// console.log(homePayout)
+
+	// playerHomePayout.innerHTML = "Home Win Payout :" + homePayout + " ETH" + "<br />" ;
+	// playerDrawPayout.innerHTML = "Draw Win Payout :" + drawPayout + " ETH" + "<br />" ;
+	// playerAwayPayout.innerHTML = "Away Win Payout :" + awayPayout + " ETH" + "<br />" ;
+
+
 
 
 // BETS DISPLAY
