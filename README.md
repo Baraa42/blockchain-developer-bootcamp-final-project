@@ -1,5 +1,12 @@
 # P2P Betting Dapp : blockchain-developer-bootcamp-final-project
 
+## Project url : 
+
+https://infallible-poitras-6d0d9d.netlify.app/
+
+## Walkthrough video url : 
+
+https://www.youtube.com/watch?v=--tgAcL835M
 
 ## The Project
 
@@ -51,7 +58,7 @@ When a bet is placed, the contract checks if there is an already existing player
     
 ## Prerequisite knowledge and components required
 1. Truffle is installed - ( the version used is `v5.4.17`)
-2. Node JS is installed - (everything was tested under `v17.0.1`)
+2. Node JS is installed - (everything was tested under `v14.18.1`)
 3. Git ( it is assumed you know how to use Git and have relevant HTTPS/SSH capability to clone)
 4. A Browser with the MetaMask extension installed. 
 5. Test Ether on the Rinkeby network
