@@ -57,10 +57,13 @@ When a bet is placed, the contract checks if there is an already existing player
     
 ## Prerequisite knowledge and components required
 1. Truffle is installed - ( the version used is `v5.4.17`)
-2. Node JS is installed - (everything was tested under `v14.18.1`)
-3. Git ( it is assumed you know how to use Git and have relevant HTTPS/SSH capability to clone)
-4. A Browser with the MetaMask extension installed. 
-5. Test Ether on the Rinkeby network
+2. Node JS is installed - (everything was tested under `v14.18.1`) :
+	- `npm i -g truffle`
+3. Openzeppelin contracts and libraries :
+	- `npm i @openzeppelin/contracts`
+5. Git ( it is assumed you know how to use Git and have relevant HTTPS/SSH capability to clone)
+6. A Browser with the MetaMask extension installed. 
+7. Test Ether on the Rinkeby network
 
 ## Download, install and build steps
 ### Downloading
