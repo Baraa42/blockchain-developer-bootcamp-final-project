@@ -16,7 +16,7 @@ It serves to show, creation, compilation, testing and interface interaction with
 
 Technologies used include:
 
-- Truffle for testing, compilation and migration.
+- Truffle and Ganache for testing, compilation and migration.
 - Web3 and MetaMask integration.
 
 ## Description 
@@ -38,23 +38,53 @@ The user/player can then place bets if he has enough balance, once the bet is pl
 When a bet is placed, the contract checks if there is an already existing player who wants to bet on the other side and matches the 2 players, otherwise the bet is marked as unmatched and waits for another player to match it.
  
 ## Directory structure
+` Only take into account games.sol contract, other contracts are under construction for improving the project, to be ignored for the submission. `
 
-1. src - contains source code for the UI : index.html, app.js and styles.css.
-2. contracts :
-	+ Games.sol the main contract used for projects
-	+ Other contracts are under construction for improving the project, to be ignored for the submission
-3. test  : 
-	* Game.js : 20 truffle unit tests
-4. node_modules :
-	* Contains OpenZeppelin Ownable contract
-5. docs - additional readme documents :
-	 
+
+```
+blockchain-developer-bootcamp-final-project
+ (root)
++-- contracts
+|   +-- games.sol   
+|   +-- balances.sol
+|   +-- TheGames.sol 
+|   +-- placeBet.sol   
+|  
++-- docs
+|   +-- avoiding_common_attacks.md  
+|   +-- design_pattern_decisions.md
+|   +-- deployed_address.txt
+|   
+|
++-- migrations
+|   +-- 1_games.js 
+|
++-- node_modules
+|   +-- @openzeppelin/contracts
+|
++-- src
+|   +-- index.html
+|   +-- App.js
+|   +-- styles.css
+|
++-- test
+|   +-- games.test.js    
+|
++-- truffle-config.js
++-- package.json
+
++-- README.md
++-- Longterm.md
++-- 
+```
     
     
 ## Prerequisite knowledge and components required
-1. Truffle is installed - ( the version used is `v5.4.17`)
-2. Node JS is installed - (everything was tested under `v14.18.1`) :
+1. Node JS is installed - (everything was tested under `v14.18.1`) 
+2. Truffle is installed - ( the version used is `v5.4.17`) :
 	- `npm i -g truffle`
+2. Ganache is installed - ( the version used is `v6.12.2 `)  :
+	- `npm i ganache-cli`
 3. Openzeppelin contracts and libraries :
 	- `npm i @openzeppelin/contracts`
 5. Git ( it is assumed you know how to use Git and have relevant HTTPS/SSH capability to clone)
@@ -67,9 +97,13 @@ When a bet is placed, the contract checks if there is an already existing player
 2. Clone and pull down this repository into a branch via git - `git clone git@github.com:Bibix93/blockchain-developer-bootcamp-final-project.git`
 3. Go to the directory you cloned into - `cd blockchain-developer-bootcamp-final-project`
 ### Testing
-1. Check that truffle is running on `http://127.0.0.1:9545/`
-2. Run truffle develop.
-3. Run test.
+1. Testing using Ganache-CLI, check that truffle is running on :
+	* `host : "127.0.0.1"`
+	* `port: 7545`
+	* `network_id: 5777`
+
+3. Run truffle develop.
+4. Run test.
 
 ## Workflow and Interacting with the Dapp
 1. Connect to Metamask on Rinkeby and get some test ETH from the faucet :
@@ -80,6 +114,12 @@ When a bet is placed, the contract checks if there is an already existing player
 3. Deposit some ETH in the contract.
 4. Place your bets.
 5. Withdraw ETH the you don't need for betting.
+
+## TODO Improvements :
+1. Using Chainlink to settle game results.
+2. Have a separate contract handling Banking : Deposit/Withdrawals.
+3. Deploy 1 separate contract for each game.
+
 
 ## Public address for certification :
 - `baraa.eth`
