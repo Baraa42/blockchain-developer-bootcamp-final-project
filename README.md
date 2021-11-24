@@ -16,8 +16,8 @@ It serves to show, creation, compilation, testing and interface interaction with
 
 Technologies used include:
 
-- Truffle for testing, compilation and migration
-- Web3 and MetaMask integration
+- Truffle for testing, compilation and migration.
+- Web3 and MetaMask integration.
 
 ## Description 
 
@@ -59,13 +59,30 @@ When a bet is placed, the contract checks if there is an already existing player
 	- `npm i @openzeppelin/contracts`
 5. Git ( it is assumed you know how to use Git and have relevant HTTPS/SSH capability to clone)
 6. A Browser with the MetaMask extension installed. 
-7. Test Ether on the Rinkeby network
+7. Test Ether on the Rinkeby network.
 
-## Download, install and build steps
+## Download, and test steps
 ### Downloading
-1. Open a terminal window
+1. Open a terminal window.
 2. Clone and pull down this repository into a branch via git - `git clone git@github.com:Bibix93/blockchain-developer-bootcamp-final-project.git`
 3. Go to the directory you cloned into - `cd blockchain-developer-bootcamp-final-project`
+### Testing
+1. Check that truffle is running on `http://127.0.0.1:9545/`
+2. Run truffle develop.
+3. Run test.
+
+## Workflow and Interacting with the Dapp
+1. Connect to Metamask on Rinkeby and get some test ETH from the faucet :
+	- Official Faucet : https://faucet.rinkeby.io/
+	- Back up Faucet : https://rinkeby-faucet.com/
+	
+2. Go to https://infallible-poitras-6d0d9d.netlify.app/ or Run the project locally by opening index.html with the browser.
+3. Deposit some ETH in the contract.
+4. Place your bets.
+5. Withdraw ETH the you don't need for betting.
+
+## Public address for certification :
+- `baraa.eth`
 
 <!-- ### Building the solution for the first time
 
