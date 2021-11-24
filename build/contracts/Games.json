@@ -206,7 +206,8 @@
     },
     {
       "stateMutability": "payable",
-      "type": "fallback"
+      "type": "fallback",
+      "payable": true
     },
     {
       "inputs": [],
@@ -219,7 +220,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -268,7 +270,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -297,7 +300,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -331,7 +335,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [],
@@ -344,7 +349,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -373,7 +379,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -402,7 +409,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [],
@@ -430,7 +438,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -459,7 +468,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -493,7 +503,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [],
@@ -506,7 +517,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -525,7 +537,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [],
@@ -549,7 +562,8 @@
     },
     {
       "stateMutability": "payable",
-      "type": "receive"
+      "type": "receive",
+      "payable": true
     },
     {
       "inputs": [
@@ -575,7 +589,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -588,7 +603,8 @@
       "name": "deposit",
       "outputs": [],
       "stateMutability": "payable",
-      "type": "function"
+      "type": "function",
+      "payable": true
     },
     {
       "inputs": [
@@ -627,7 +643,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -655,7 +672,8 @@
       "name": "placeBet",
       "outputs": [],
       "stateMutability": "payable",
-      "type": "function"
+      "type": "function",
+      "payable": true
     },
     {
       "inputs": [
@@ -684,7 +702,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -713,7 +732,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -732,7 +752,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -793,7 +814,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -812,7 +834,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -836,7 +859,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     }
   ],
   "metadata": "{\"compiler\":{\"version\":\"0.8.9+commit.e5eed63a\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"string\",\"name\":\"teams\",\"type\":\"string\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"_backer\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"_layer\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"odds\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"enum Games.Selection\",\"name\":\"_selection\",\"type\":\"uint8\"}],\"name\":\"BetMatched\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"enum Games.Selection\",\"name\":\"selection\",\"type\":\"uint8\"}],\"name\":\"GameWinner\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[],\"name\":\"NewStatus\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"components\":[{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"teams\",\"type\":\"string\"},{\"internalType\":\"enum Games.GameStatus\",\"name\":\"status\",\"type\":\"uint8\"},{\"internalType\":\"enum Games.Selection\",\"name\":\"winner\",\"type\":\"uint8\"}],\"indexed\":false,\"internalType\":\"struct Games.Game\",\"name\":\"_game\",\"type\":\"tuple\"}],\"name\":\"Payout\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"player\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"PlayerDeposit\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"player\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"PlayerWithdrawal\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"ValueReceived\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"_player\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"_odds\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"enum Games.Selection\",\"name\":\"_selection\",\"type\":\"uint8\"},{\"indexed\":false,\"internalType\":\"enum Games.BetType\",\"name\":\"_betType\",\"type\":\"uint8\"}],\"name\":\"unmatchedBetCreated\",\"type\":\"event\"},{\"stateMutability\":\"payable\",\"type\":\"fallback\"},{\"inputs\":[],\"name\":\"admin\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"allBets\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"player\",\"type\":\"address\"},{\"internalType\":\"enum Games.BetType\",\"name\":\"betType\",\"type\":\"uint8\"},{\"internalType\":\"enum Games.Selection\",\"name\":\"selection\",\"type\":\"uint8\"},{\"internalType\":\"enum Games.Stake\",\"name\":\"stake\",\"type\":\"uint8\"},{\"internalType\":\"uint256\",\"name\":\"odds\",\"type\":\"uint256\"},{\"internalType\":\"enum Games.BetStatus\",\"name\":\"status\",\"type\":\"uint8\"},{\"internalType\":\"uint256\",\"name\":\"betId\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"enum Games.Selection\",\"name\":\"\",\"type\":\"uint8\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"backBetsAvailable\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"enum Games.Selection\",\"name\":\"\",\"type\":\"uint8\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"backBetsId\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"betCount\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"enum Games.Selection\",\"name\":\"winner\",\"type\":\"uint8\"}],\"name\":\"changeGameStatus\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"deposit\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"enum Games.Selection\",\"name\":\"\",\"type\":\"uint8\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"firstIndexOfBackBet\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"enum Games.Selection\",\"name\":\"\",\"type\":\"uint8\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"firstIndexOfLayBet\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"game\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"teams\",\"type\":\"string\"},{\"internalType\":\"enum Games.GameStatus\",\"name\":\"status\",\"type\":\"uint8\"},{\"internalType\":\"enum Games.Selection\",\"name\":\"winner\",\"type\":\"uint8\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"enum Games.Selection\",\"name\":\"_selection\",\"type\":\"uint8\"},{\"internalType\":\"uint256\",\"name\":\"_odds\",\"type\":\"uint256\"},{\"internalType\":\"enum Games.Stake\",\"name\":\"_stake\",\"type\":\"uint8\"}],\"name\":\"getBackBetsAvailable\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_player\",\"type\":\"address\"}],\"name\":\"getBalance\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_betId\",\"type\":\"uint256\"}],\"name\":\"getBetStatus\",\"outputs\":[{\"internalType\":\"enum Games.BetStatus\",\"name\":\"\",\"type\":\"uint8\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"enum Games.Selection\",\"name\":\"_selection\",\"type\":\"uint8\"},{\"internalType\":\"uint256\",\"name\":\"_odds\",\"type\":\"uint256\"},{\"internalType\":\"enum Games.Stake\",\"name\":\"_stake\",\"type\":\"uint8\"}],\"name\":\"getLayBetsAvailable\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_player\",\"type\":\"address\"},{\"internalType\":\"enum Games.Selection\",\"name\":\"_selection\",\"type\":\"uint8\"}],\"name\":\"getPayout\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_player\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_betNumber\",\"type\":\"uint256\"}],\"name\":\"getPlayerBet\",\"outputs\":[{\"components\":[{\"internalType\":\"address\",\"name\":\"player\",\"type\":\"address\"},{\"internalType\":\"enum Games.BetType\",\"name\":\"betType\",\"type\":\"uint8\"},{\"internalType\":\"enum Games.Selection\",\"name\":\"selection\",\"type\":\"uint8\"},{\"internalType\":\"enum Games.Stake\",\"name\":\"stake\",\"type\":\"uint8\"},{\"internalType\":\"uint256\",\"name\":\"odds\",\"type\":\"uint256\"},{\"internalType\":\"enum Games.BetStatus\",\"name\":\"status\",\"type\":\"uint8\"},{\"internalType\":\"uint256\",\"name\":\"betId\",\"type\":\"uint256\"}],\"internalType\":\"struct Games.Bet\",\"name\":\"\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_player\",\"type\":\"address\"}],\"name\":\"getPlayerNumberOfBets\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getTeams\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"enum Games.Selection\",\"name\":\"\",\"type\":\"uint8\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"layBetsAvailable\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"enum Games.Selection\",\"name\":\"\",\"type\":\"uint8\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"layBetsId\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"enum Games.BetType\",\"name\":\"_betType\",\"type\":\"uint8\"},{\"internalType\":\"enum Games.Selection\",\"name\":\"_selection\",\"type\":\"uint8\"},{\"internalType\":\"enum Games.Stake\",\"name\":\"_stake\",\"type\":\"uint8\"},{\"internalType\":\"uint256\",\"name\":\"_odds\",\"type\":\"uint256\"}],\"name\":\"placeBet\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"players\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"renounceOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"withdraw\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"withdrawAll\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"stateMutability\":\"payable\",\"type\":\"receive\"}],\"devdoc\":{\"author\":\"Baraa Elalami\",\"details\":\"Order matching algorithm is basic allowing users to bet only one of the 4 amounts : 0.001 ETH, 0.01 ETH, 0.1 ETH, 1 ETH\",\"kind\":\"dev\",\"methods\":{\"changeGameStatus(uint8)\":{\"details\":\"function that change game status\",\"params\":{\"winner\":\"of the game ( 1=HOME, 2=DRAW, 3=AWAY)\"}},\"constructor\":{\"params\":{\"teams\":\"string describing the Game/Bet e.g Real Madrid vs Inter Milan\"}},\"deposit(uint256)\":{\"params\":{\"amount\":\"to deposit \"}},\"getBackBetsAvailable(uint8,uint256,uint8)\":{\"params\":{\"_odds\":\"must be > 100 then real odds is _odds /100 e.g 350 correspond to 3.5 odds\",\"_selection\":\"Bet selection (1 = HOME, 2 = DRAW, 3 = AWAY)\",\"_stake\":\"Amount to bet (0 = 0.001 ETH, 1 = 0.01 ETH, 2 = 0.1 ETH, 3 = 1 ETH)\"},\"returns\":{\"_0\":\"number of back bets available for particular parameters\"}},\"getBalance(address)\":{\"params\":{\"_player\":\"address\"},\"returns\":{\"_0\":\"user balance\"}},\"getBetStatus(uint256)\":{\"params\":{\"_betId\":\"Id of the requested bet\"},\"returns\":{\"_0\":\"The bet with the corresponding Id\"}},\"getLayBetsAvailable(uint8,uint256,uint8)\":{\"params\":{\"_odds\":\"must be > 100 then real odds is _odds /100 e.g 350 correspond to 3.5 odds\",\"_selection\":\"Bet selection (1 = HOME, 2 = DRAW, 3 = AWAY)\",\"_stake\":\"Amount to bet (0 = 0.001 ETH, 1 = 0.01 ETH, 2 = 0.1 ETH, 3 = 1 ETH)\"},\"returns\":{\"_0\":\"number of lay bets available for particular parameters\"}},\"getPayout(address,uint8)\":{\"details\":\"returns current player current payout for the selection\",\"params\":{\"_player\":\"Address placing the bet\",\"_selection\":\"Bet selection (1 = HOME, 2 = DRAW, 3 = AWAY)\"}},\"getPlayerBet(address,uint256)\":{\"params\":{\"_betNumber\":\"the bet number _betNumber placed by the player\",\"_player\":\"Address placing the bet\"},\"returns\":{\"_0\":\"The bet placed by the player\"}},\"getPlayerNumberOfBets(address)\":{\"params\":{\"_player\":\"Address placing the bet\"},\"returns\":{\"_0\":\"number of bets placed by _player\"}},\"getTeams()\":{\"returns\":{\"_0\":\"string of the teams/object of the game\"}},\"owner()\":{\"details\":\"Returns the address of the current owner.\"},\"placeBet(uint8,uint8,uint8,uint256)\":{\"details\":\"callable function that places the bets\",\"params\":{\"_betType\":\"Back or Lay (Back = 0, Lay = 1)\",\"_odds\":\"must be > 100 then real odds is _odds /100 e.g 350 correspond to 3.5 odds\",\"_selection\":\"Bet selection (1 = HOME, 2 = DRAW, 3 = AWAY)\",\"_stake\":\"Amount to bet (0 = 0.001 ETH, 1 = 0.01 ETH, 2 = 0.1 ETH, 3 = 1 ETH)\"}},\"renounceOwnership()\":{\"details\":\"Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner.\"},\"transferOwnership(address)\":{\"details\":\"Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner.\"},\"withdraw(uint256)\":{\"params\":{\"amount\":\"to withdraw \"}}},\"stateVariables\":{\"admin\":{\"details\":\"Admin who decide the outcome of the game\"}},\"title\":\"Betting contract for one game\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{\"allBets(uint256)\":{\"notice\":\"array that hold all bets\"},\"backBetsAvailable(uint8,uint256,uint256)\":{\"notice\":\"tracks amount of back bets available to match : Selection => Odds => => stake amount\"},\"backBetsId(uint8,uint256,uint256,uint256)\":{\"notice\":\"tracks the Bet id of the backBets : Selection => Odds =>  stake => uint [id] | uint backBetId = backBetsId[_selection][_odds][backId][map_stake]\"},\"betCount()\":{\"notice\":\"tarcks the amount of bets\"},\"deposit(uint256)\":{\"notice\":\"deposit function, adds amount to user balance\"},\"firstIndexOfBackBet(uint8,uint256,uint256)\":{\"notice\":\"track Id of first back bet available in the backBetsId[selection][odds][stake],  Selection => Odds=> stake  => Id   uint backId = firstIndexOfBackBet[_selection][_odds][map_stake];\"},\"firstIndexOfLayBet(uint8,uint256,uint256)\":{\"notice\":\"track Id of first lay bet available in the layBetsId[selection][odds][stake],  Selection => Odds=> stake  => Id   uint layId = firstIndexOfBackBet[_selection][_odds][map_stake];\"},\"layBetsAvailable(uint8,uint256,uint256)\":{\"notice\":\"tracks amount of lay bets available to match : Selection => Odds => => stake amount\"},\"layBetsId(uint8,uint256,uint256,uint256)\":{\"notice\":\"tracks the Bet id of the layBets : Selection => Odds =>  stake => uint [id]  | uint layBetId = backBetsId[_selection][_odds][backId][map_stake]\"},\"players(uint256)\":{\"notice\":\"track addresses of all players\"},\"withdraw(uint256)\":{\"notice\":\"withdraw function, substract amount from user balance and send the amount \"},\"withdrawAll()\":{\"notice\":\"withdraw all function, send remaining balance back to user\"}},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/Games.sol\":\"Games\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"@openzeppelin/contracts/access/Ownable.sol\":{\"keccak256\":\"0x6bb804a310218875e89d12c053e94a13a4607cdf7cc2052f3e52bd32a0dc50a1\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://b2ebbbe6d0011175bd9e7268b83de3f9c2f9d8d4cbfbaef12aff977d7d727163\",\"dweb:/ipfs/Qmd5c7Vxtis9wzkDNhxwc6A2QT5H9xn9kfjhx7qx44vpro\"]},\"@openzeppelin/contracts/utils/Context.sol\":{\"keccak256\":\"0x90565a39ae45c80f0468dc96c7b20d0afc3055f344c8203a0c9258239f350b9f\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://26e8b38a7ac8e7b4463af00cf7fff1bf48ae9875765bf4f7751e100124d0bc8c\",\"dweb:/ipfs/QmWcsmkVr24xmmjfnBQZoemFniXjj3vwT78Cz6uqZW1Hux\"]},\"project:/contracts/Games.sol\":{\"keccak256\":\"0xc29b2bfa8a96033d3e5728324269c31749b0ea0841ec00c3010a23ecee8226cc\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://7dfab083dd25124b1b90f1dce08bc31d93cd27689b6a7aab476d1301f904eaaa\",\"dweb:/ipfs/QmPZgB56u9A3pUBKiyUxfe7yEyXnmso5WXerGqPHBFQ2q8\"]}},\"version\":1}",
@@ -69876,12 +69900,13 @@
         }
       },
       "links": {},
-      "address": "0xe66B165A4229c718838A046C4A38d13F817Dca18",
-      "transactionHash": "0x0d30a9a111198a35f97f61f7d6c09c1946fcb6dffc82f20c80e4b1f782f2c675"
+      "address": "0xC593eF81b72Ddf8C1514AD7E3A2b91243dbF8294",
+      "transactionHash": "0x1cb760638bc2bfeae7bc7d77f5ae75a75ebb0e8c26998022660a1246db72cacf"
     }
   },
   "schemaVersion": "3.4.3",
-  "updatedAt": "2021-11-24T14:48:04.435Z",
+  "updatedAt": "2021-11-24T15:44:59.002Z",
+  "networkType": "ethereum",
   "devdoc": {
     "author": "Baraa Elalami",
     "details": "Order matching algorithm is basic allowing users to bet only one of the 4 amounts : 0.001 ETH, 0.01 ETH, 0.1 ETH, 1 ETH",

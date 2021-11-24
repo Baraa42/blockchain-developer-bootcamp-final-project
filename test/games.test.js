@@ -11,7 +11,7 @@ const Games = artifacts.require("Games");
 /// Test 20 Owner change game status
 /// Test 20 Balance update after game is settled
 
-contract('Games', (accounts) => {
+contract('Games', (accounts, networks) => {
 
   describe('Check Initial Variables', () => {
 
@@ -234,6 +234,18 @@ contract('Games', (accounts) => {
       assert.equal(game[2], 1, "Game status should change");
       assert.equal(balanceZero, web3.utils.toWei('4118', "finney"), "Wrong balance");
       assert.equal(balanceOne, web3.utils.toWei('882', "finney"), "Wrong balance");
+    });
+  })
+
+  describe('Withdraw winnings', () => {
+    it('should  withdraw rest of balance and update it ', async () => {
+      const gameInstance = await Games.deployed();
+      await gameInstance.withdrawAll();
+      await gameInstance.withdrawAll({from:accounts[1]});
+      const balance0 = await gameInstance.getBalance(accounts[0]);
+      const balance1 = await gameInstance.getBalance(accounts[1]);
+      assert.equal(balance0, 0, "Withdrawal 0 failed");
+      assert.equal(balance1, 0, "Withdrawal 1 failed");
     });
   })
 
