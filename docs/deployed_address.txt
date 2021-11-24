@@ -1,8 +1,0 @@
-Test Network = RINKEBY
-
-
-Game Contract address = '0x62fC3A5B0D2Edb5FC256A16d63133F5932209ec6';
-
-Game Contract address used for walkthrough video = '0x2925cB8e322700ED83A768CDb22384b10db445cb';
-
-
