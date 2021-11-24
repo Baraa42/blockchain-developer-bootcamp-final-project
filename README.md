@@ -84,35 +84,6 @@ When a bet is placed, the contract checks if there is an already existing player
 ## Public address for certification :
 - `baraa.eth`
 
-<!-- ### Building the solution for the first time
-
-1. In the terminal window type in the command `npm install`
-2. This should install a fair amount of components
-3. Type in `npm audit fix` to fix known vulnerabilities in packages
-
-### Confirm major required components are installed
-
-1. Type in the terminal windows `ganache-cli --version`
-	1. This should produce a response like `Ganache CLI v6.10.2 (ganache-core: 2.11.3)`
-2. In the `node_modules` folder there should be the following
-	1. @openzeppelin
-	2. @truffle
-	3. @trufflesuite
-	4. web3 (and many others with `web3-` prefix)
-	5. eth-gas-reporter (for gas tweaking)
-	6. solidity-coverage (for checking code coverage)
-	
-If some of these components are not installed you may need to run:
-
-1. `npm install -g @openzeppelin/contracts`
-2. `npm install -g @openzeppelin/truffle-upgrades`
-3. `npm install -g truffle`
-4. `npm install -g @truffle/hdwallet-provider`
-5. `npm install -g solidity-coverage`
-6. `npm install -g ganache-cli`
-7. `npm install -g web3` -->
-    
-## Public Account
 
 
   
