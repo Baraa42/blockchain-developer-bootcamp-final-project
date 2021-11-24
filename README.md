@@ -37,22 +37,18 @@ The user/player can then place bets if he has enough balance, once the bet is pl
 
 When a bet is placed, the contract checks if there is an already existing player who wants to bet on the other side and matches the 2 players, otherwise the bet is marked as unmatched and waits for another player to match it.
  
-## Directory srtucture
-  1. src - contains source code for the UI : index.html, app.js and styles.css.
+## Directory structure
 
-
-  2. contracts - solidity contracts
-    - Games.sol contract the main contract used for projects.
-    - Other contracts are under construction for improving the project, to be ignored for the submission.
-    
-  3. test - truffle tests : 
-    - Game.js : 20 truffle unit tests
-   
-  4. node_modules :
-    - Contains OpenZeppelin Ownable contract
-
-  5. docs - additional readme documents :
-    - 
+1. src - contains source code for the UI : index.html, app.js and styles.css.
+2. contracts :
+	+ Games.sol the main contract used for projects
+	+ Other contracts are under construction for improving the project, to be ignored for the submission
+3. test  : 
+	* Game.js : 20 truffle unit tests
+4. node_modules :
+	* Contains OpenZeppelin Ownable contract
+5. docs - additional readme documents :
+	 
     
     
 ## Prerequisite knowledge and components required
