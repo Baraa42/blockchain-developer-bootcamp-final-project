@@ -114,6 +114,7 @@ blockchain-developer-bootcamp-final-project
 3. Deposit some ETH in the contract.
 4. Place your bets.
 5. Withdraw ETH the you don't need for betting.
+6. Wait for the game to settle and withdraw winnings.
 
 ## TODO Improvements :
 1. Using Chainlink to settle game results.
