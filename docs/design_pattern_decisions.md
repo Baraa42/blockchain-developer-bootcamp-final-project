@@ -12,4 +12,8 @@ The contract inherits from OpenZeppelin Ownable contract:
 
 ## Optimizing gas 
 
-Explain why didn't use for loops.
+The placing bet function avoid using loops, to match players the function doesn't loop on allBets[] array to check if it is possible to match the bet, instead the contract use the following mappings :
+
+- 2 mappings : backBetsAvailable and layBetsAvailable to track the amount of back/lay bets available, if it's 0 it means the back/lay bet cant be matched
+- 4 mappings : backBetsId, layBetsId, firstIndexOfBackBet, firstIndexOfLayBet to track the betId to be matched which avoids using for loops.
+

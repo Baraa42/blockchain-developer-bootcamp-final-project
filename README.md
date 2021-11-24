@@ -16,8 +16,8 @@ It serves to show, creation, compilation, testing and interface interaction with
 
 Technologies used include:
 
-- Truffle for testing, compilation and migration
-- Web3 and MetaMask integration
+- Truffle for testing, compilation and migration.
+- Web3 and MetaMask integration.
 
 ## Description 
 
@@ -37,22 +37,18 @@ The user/player can then place bets if he has enough balance, once the bet is pl
 
 When a bet is placed, the contract checks if there is an already existing player who wants to bet on the other side and matches the 2 players, otherwise the bet is marked as unmatched and waits for another player to match it.
  
-## Directory srtucture
-  1. src - contains source code for the UI : index.html, app.js and styles.css.
+## Directory structure
 
-
-  2. contracts - solidity contracts
-    - Games.sol contract the main contract used for projects.
-    - Other contracts are under construction for improving the project, to be ignored for the submission.
-    
-  3. test - truffle tests : 
-    - Game.js : 20 truffle unit tests
-   
-  4. node_modules :
-    - Contains OpenZeppelin Ownable contract
-
-  5. docs - additional readme documents :
-    - 
+1. src - contains source code for the UI : index.html, app.js and styles.css.
+2. contracts :
+	+ Games.sol the main contract used for projects
+	+ Other contracts are under construction for improving the project, to be ignored for the submission
+3. test  : 
+	* Game.js : 20 truffle unit tests
+4. node_modules :
+	* Contains OpenZeppelin Ownable contract
+5. docs - additional readme documents :
+	 
     
     
 ## Prerequisite knowledge and components required
@@ -63,43 +59,31 @@ When a bet is placed, the contract checks if there is an already existing player
 	- `npm i @openzeppelin/contracts`
 5. Git ( it is assumed you know how to use Git and have relevant HTTPS/SSH capability to clone)
 6. A Browser with the MetaMask extension installed. 
-7. Test Ether on the Rinkeby network
+7. Test Ether on the Rinkeby network.
 
-## Download, install and build steps
+## Download, and test steps
 ### Downloading
-1. Open a terminal window
+1. Open a terminal window.
 2. Clone and pull down this repository into a branch via git - `git clone git@github.com:Bibix93/blockchain-developer-bootcamp-final-project.git`
 3. Go to the directory you cloned into - `cd blockchain-developer-bootcamp-final-project`
+### Testing
+1. Check that truffle is running on `http://127.0.0.1:9545/`
+2. Run truffle develop.
+3. Run test.
 
-<!-- ### Building the solution for the first time
-
-1. In the terminal window type in the command `npm install`
-2. This should install a fair amount of components
-3. Type in `npm audit fix` to fix known vulnerabilities in packages
-
-### Confirm major required components are installed
-
-1. Type in the terminal windows `ganache-cli --version`
-	1. This should produce a response like `Ganache CLI v6.10.2 (ganache-core: 2.11.3)`
-2. In the `node_modules` folder there should be the following
-	1. @openzeppelin
-	2. @truffle
-	3. @trufflesuite
-	4. web3 (and many others with `web3-` prefix)
-	5. eth-gas-reporter (for gas tweaking)
-	6. solidity-coverage (for checking code coverage)
+## Workflow and Interacting with the Dapp
+1. Connect to Metamask on Rinkeby and get some test ETH from the faucet :
+	- Official Faucet : https://faucet.rinkeby.io/
+	- Back up Faucet : https://rinkeby-faucet.com/
 	
-If some of these components are not installed you may need to run:
+2. Go to https://infallible-poitras-6d0d9d.netlify.app/ or Run the project locally by opening index.html with the browser.
+3. Deposit some ETH in the contract.
+4. Place your bets.
+5. Withdraw ETH the you don't need for betting.
 
-1. `npm install -g @openzeppelin/contracts`
-2. `npm install -g @openzeppelin/truffle-upgrades`
-3. `npm install -g truffle`
-4. `npm install -g @truffle/hdwallet-provider`
-5. `npm install -g solidity-coverage`
-6. `npm install -g ganache-cli`
-7. `npm install -g web3` -->
-    
-## Public Account
+## Public address for certification :
+- `baraa.eth`
+
 
 
   
