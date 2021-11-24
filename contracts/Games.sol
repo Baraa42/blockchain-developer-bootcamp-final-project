@@ -10,17 +10,15 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract Games is Ownable {
 
     /// @dev Admin who decide the outcome of the game
-    address  public admin;
+    address public admin;
     Game public game;
-    /// @notice trcks the amount of bets
+    /// @notice tarcks the amount of bets
     uint public betCount;
-    /// @notice array the hold all bets
+    /// @notice array that hold all bets
     Bet[] public allBets;
     /// @notice track addresses of all players
     address[] public players;
-    /// @notice track if the game is paid
-    bool paid = false;
-
+   
 
     /// @notice tracks the id of the players bets
     mapping(address => uint[]) playerBets; 
@@ -67,7 +65,7 @@ contract Games is Ownable {
         string teams;
         GameStatus status;
         Selection winner;
-
+        // uint kickoffTime;  To be added later
     }
 
      /// @dev Bet struct
@@ -79,8 +77,7 @@ contract Games is Ownable {
         uint odds;
         BetStatus status;
         uint betId;
-
-       
+        // uint time; To be added later
     }
 
    
@@ -99,12 +96,7 @@ contract Games is Ownable {
         require(game.status == GameStatus.Open, "Game is Over");
         _;
     }
-    /// @dev Check if bet is unmatched -- Delete it 
-    modifier isUnmatched(Bet memory bet) {
-        require(bet.status == BetStatus.Unmatched, "Cant add already matched bet ");
-        _;
-    }
-   /// @dev check of odds are valid : we take _odds >100 then real odds is _odds /100 e.g 350 correspond to 3.5 odds
+   /// @dev check of odds are valid : we take _odds >100 then real odds are _odds /100 e.g 350 correspond to 3.5 odds
     modifier isValidOdds(uint _odds) {
         require(_odds>100, "unvalid odds");
         _;
@@ -121,37 +113,27 @@ contract Games is Ownable {
     }
     //// @dev checks if user has enough funds to place the bet 
     modifier hasEnoughFunds(BetType _betType, address _player, Stake _stake, uint _odds ) {
-        uint256 mul = _stake == Stake.OneFinney ? 1 : _stake == Stake.TenFinney ? 10 : _stake == Stake.HundredFinney ? 100 : 1000;
-        
-        if (_betType == BetType.Back){
-            
+        uint256 mul = _stake == Stake.OneFinney ? 1 : _stake == Stake.TenFinney ? 10 : _stake == Stake.HundredFinney ? 100 : 1000;  
+        if (_betType == BetType.Back){    
              require(balances[_player] >= mul * 10**15, 'Not enough funds' ) ;
         }
         else if (_betType == BetType.Lay) {
-            
             uint amount= ( _odds -100) * 10**13;
-
             require(balances[_player] >= amount*mul, 'Not enough funds') ;
-
         }
         _;
-        
     }
-    /// @dev  check if game is already paid   
-    modifier isNotPaid() {
-        require(!paid, 'game already paid');
-        _;
-    }
+
 
   
     /// @param teams string describing the Game/Bet e.g Real Madrid vs Inter Milan
-    constructor(string memory teams)  {
-        
+    constructor(string memory teams /*, uint kickoff */ )  {  
         admin = msg.sender;
         game.owner = admin;
         game.teams = teams;
         game.status = GameStatus.Open;
         game.winner = Selection.Open;
+        // game.kickoff = kickoff; To be added later
 
     }
 
@@ -163,7 +145,6 @@ contract Games is Ownable {
         game.status = GameStatus.Over;
         game.winner = winner;
         uint totalBets = allBets.length;
-        
         for(uint i=0; i<totalBets; i++) {
             if(allBets[i].status == BetStatus.Unmatched){
                 allBets[i].status = BetStatus.Closed;
@@ -173,18 +154,11 @@ contract Games is Ownable {
                 } else {
                      allBets[i].status = BetStatus.Lose;
                 }
-            }
-        
+            }       
         }
         
-        
         emit GameWinner( winner);
-        
         adminPayout();
-        
-
-
-
     }
 
     /// @return string of the teams/object of the game
@@ -222,8 +196,6 @@ contract Games is Ownable {
         balances[msg.sender] =0;
         payable(msg.sender).transfer(amount);
         emit PlayerWithdrawal(msg.sender, amount);
-        
-        
     }
     
     
@@ -247,15 +219,10 @@ contract Games is Ownable {
         
          if(playerNumberOfBets[msg.sender]==0) { 
             players.push(msg.sender);
-           
         }
         
-        
         addBet(msg.sender, _betType, _selection, _stake, _odds);
-        
-        
-       
-        
+         
         uint mul = _stake == Stake.OneFinney ? 1 : _stake == Stake.TenFinney ? 10 : _stake == Stake.HundredFinney ? 100 : 1000;
         
         if(_betType == BetType.Back){
@@ -268,10 +235,6 @@ contract Games is Ownable {
             balances[msg.sender] -= amount;
             placeLayBet(msg.sender, _selection, _stake, _odds);
         }
-        
-        
-
-
     }
 
     /// @dev internal function used to place back bets by placeBet
@@ -306,7 +269,6 @@ contract Games is Ownable {
 
             else if (layBetsAvailable[_selection][_odds][map_stake] == 0) {
                 backBetsAvailable[_selection][_odds][map_stake]+=1;
-                // do something for first index
                 incrementWithStake(player, _odds,  BetType.Back, _stake);
                 emit unmatchedBetCreated(player,  _odds,  _selection,  BetType.Back);
             }
@@ -526,13 +488,16 @@ contract Games is Ownable {
     
     /// FALLBACK FUNCTIONS
     receive() external payable {
-        
+        balances[msg.sender] += msg.value;
+        emit PlayerDeposit(msg.sender, msg.value);
         emit ValueReceived(msg.sender, msg.value);
         
     }
     
     fallback() external payable {
-        
+
+        balances[msg.sender] += msg.value;
+        emit PlayerDeposit(msg.sender, msg.value);
         emit ValueReceived(msg.sender, msg.value);
         
     }
